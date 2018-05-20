@@ -53,6 +53,7 @@
 <body>
 <header>
     <!-- Fixed navbar -->
+    {% block nav %}
     <nav role="navigation" class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <a class="navbar-brand py-1" href="{{ path("homepage") }}" tabindex="1">
             <img src="{{ asset("svg/ffem.svg") }}" height="32"/>
@@ -89,9 +90,11 @@
             </ul>
         </div>
     </nav>
+    {% endblock %}
 </header>
 
 <main role="main">
+    {% block message %}
     <div class="container-fluid bg-info text-white px-2 py-1">
         <div class="container">
             <div class="row align-items-center">
@@ -109,9 +112,11 @@
             </div>
         </div>
     </div>
+    {% endblock %}
     {% block body %}{% endblock %}
 </main>
 
+{% block footer %}
 <footer class="footer">
     <div class="container text-center py-3">
         <span class="text-muted">Version 2.0.5-beta &copy; Ellipse {{ "now"|date("Y") }} <a
@@ -122,6 +127,7 @@
                     href="https://github.com/elyos41/metz-filmfest">GitHub</a></span>
     </div>
 </footer>
+{% endblock %}
 
 <script src="{{ asset("build/js/app.js") }}"></script>
 {% block javascripts %}{% endblock %}

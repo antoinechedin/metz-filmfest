@@ -13,3 +13,14 @@ legalNotices:
 inscription:
   path: /inscription
   controller: App\Controller\InscriptionController::index
+
+login:
+  path: /login
+  controller: App\Controller\AdminController::login
+
+logout:
+  path: /logout
+
+admin:
+  path: /admin
+  controller: App\Controller\AdminController::index
