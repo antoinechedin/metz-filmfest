@@ -1,0 +1,58 @@
+$theme-colors: (
+        "green": #4b8271,
+        "secondary": #f1cb38
+);
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Bernard MT Condensed" !important;
+}
+
+@import "~bootstrap/scss/bootstrap";
+
+main {
+  padding: 58px 0 0;
+}
+
+.footer {
+  background-color: #F5F5F5;
+}
+
+.icon {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+}
+
+.icon-lg {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+}
+
+.icon-white {
+  fill: white;
+}
+
+.btn-xl {
+  padding: 18px 28px;
+  font-size: 28px;
+  line-height: normal;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+}
+
+.homepage-poster {
+  background: url("../img/homepage_poster.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.homepage-poster-spacer {
+  height: 3vh;
+}
+
+.text-title {
+  font-family: "Bernard MT Condensed";
+}

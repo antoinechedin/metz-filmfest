@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file datatype="plaintext" original="file.ext" source-language="en" target-language="fr-FR">
+        <body>
+            <trans-unit id="title">
+                <source>Title</source>
+                <target>Titre</target>
+            </trans-unit>
+            <trans-unit id="first_name">
+                <source>First name</source>
+                <target>Prénom</target>
+            </trans-unit>
+            <trans-unit id="name">
+                <source>Name</source>
+                <target>Nom</target>
+            </trans-unit>
+            <trans-unit id="director">
+                <source>Director</source>
+                <target>Réalisateur</target>
+            </trans-unit>
+            <trans-unit id="personal_informations">
+                <source>Personal information</source>
+                <target>Informations personnelles</target>
+            </trans-unit>
+            <trans-unit id="birth_date">
+                <source>Birth date</source>
+                <target>Date de naissance</target>
+            </trans-unit>
+            <trans-unit id="year">
+                <source>Year</source>
+                <target>Année</target>
+            </trans-unit>
+            <trans-unit id="month">
+                <source>Month</source>
+                <target>Mois</target>
+            </trans-unit>
+            <trans-unit id="day">
+                <source>Day</source>
+                <target>Jour</target>
+            </trans-unit>
+            <trans-unit id="email">
+                <source>Email</source>
+                <target>Email</target>
+            </trans-unit>
+            <trans-unit id="study_year">
+                <source>Study year</source>
+                <target>Année d'études</target>
+            </trans-unit>
+            <trans-unit id="study_place">
+                <source>Study place</source>
+                <target>Établissement d'études</target>
+            </trans-unit>
+            <trans-unit id="completion_date">
+                <source>Completion date</source>
+                <target>Date de réalisation</target>
+            </trans-unit>
+            <trans-unit id="duration">
+                <source>Duration</source>
+                <target>Durée</target>
+            </trans-unit>
+            <trans-unit id="duration_in_minutes">
+                <source>Duration (in minutes)</source>
+                <target>Durée (en minutes)</target>
+            </trans-unit>
+            <trans-unit id="categories">
+                <source>Categories</source>
+                <target>Genres</target>
+            </trans-unit>
+            <trans-unit id="nominateActor">
+                <source>I would like to nominate an actor for the acting award</source>
+                <target>Je souhaite nominer un acteur pour le prix d'interprétation</target>
+            </trans-unit>
+            <trans-unit id="actor">
+                <source>Actor</source>
+                <target>Acteur</target>
+            </trans-unit>
+            <trans-unit id="link">
+                <source>Link to your short</source>
+                <target>Lien vers votre court-métrage</target>
+            </trans-unit>
+            <trans-unit id="additional_information">
+                <source>Additional information</source>
+                <target>Informations complémentaires</target>
+            </trans-unit>
+            <trans-unit id="optional">
+                <source>Optional</source>
+                <target>Optionnel</target>
+            </trans-unit>
+            <trans-unit id="submit">
+                <source>Submit</source>
+                <target>Envoyer</target>
+            </trans-unit>
+            <trans-unit id="synopsis">
+                <source>Synopsis</source>
+                <target>Synopsis</target>
+            </trans-unit>
+            <trans-unit id="agreeTerms">
+                <source>I have read, understand and agree to the terms and conditions of the festival's rules</source>
+                <target>J'ai lu, compris et accepte les termes et conditions du règlement du festival</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

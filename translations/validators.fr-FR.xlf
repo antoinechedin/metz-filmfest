@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file datatype="plaintext" original="file.ext" source-language="en" target-language="fr-FR">
+        <body>
+            <trans-unit id="error">
+                <source>Error</source>
+                <target>Erreur</target>
+            </trans-unit>
+            <trans-unit id="blankValueError">
+                <source>This value should not be blank.</source>
+                <target>Ce champ est obligatoire</target>
+            </trans-unit>
+            <trans-unit id="trueValueError">
+                <source>This value should be true.</source>
+                <target>Vous devez cocher cette case pour continuer</target>
+            </trans-unit>
+            <trans-unit id="categoryError1">
+                <source>You must specify at least {{ limit }} category</source>
+                <target>Vous devez renseigner au moins {{ limit }} genre</target>
+            </trans-unit>
+            <trans-unit id="categoryError2">
+                <source>You cannot specify more than {{ limit }} categories</source>
+                <target>Vous ne pouvez pas renseigner plus de {{ limit }} genres</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

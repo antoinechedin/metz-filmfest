@@ -1,0 +1,22 @@
+{% extends "layout.html.twig" %}
+
+{#{% block stylesheet %}
+    <link href="" rel="stylesheet">
+{% endblock %}#}
+
+{% block body %}
+    <div class="container-fluid d-md-none">
+        <div class="container py-5 text-justify">
+            {% include "legal-notices/legal-notices-text.html.twig" %}
+        </div>
+    </div>
+    <div class="container-fluid bg-green d-none d-md-block">
+        <div class="container py-5">
+            <div class="card text-justify">
+                <div class="card-body">
+                    {% include "legal-notices/legal-notices-text.html.twig" %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
