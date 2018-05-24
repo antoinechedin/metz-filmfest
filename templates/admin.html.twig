@@ -1,9 +1,5 @@
 {% extends "layout.html.twig" %}
 
-{% block stylesheet %}
-    <link href="{{ asset("css/admin.css") }}" rel="stylesheet">
-{% endblock %}
-
 {% block nav %}
     <nav role="navigation" class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <a class="navbar-brand py-1" href="{{ path("admin") }}" tabindex="1">
@@ -77,14 +73,14 @@
                                 {% for movie in movies %}
                                     <tr>
                                         <td>{{ movie.id }}</td>
-                                        <td>{{ movie.title }}</td>
+                                        <td><a href="{{ path("movieDetails", {"movieId": movie.id}) }}">{{ movie.title }}</a></td>
                                         <td>{{ movie.director.firstName }} {{ movie.director.name }}</td>
                                         <td>{% for category in movie.categories %}
                                                 <span class="badge badge-secondary">{{ category.name }}</span>
                                             {% endfor %}</td>
                                         <td><a href="{{ movie.link }}">{{ movie.link }}</a></td>
-                                        <td><a class="btn btn-primary btn-sm align-middle" href="#" role="button">
-                                                <img src="{{ asset("svg/ellipsis.svg") }}" class="icon"/>
+                                        <td><a href="#">
+                                                <span class="oi oi-plus" title="more" aria-hidden="true"></span>
                                             </a></td>
                                     </tr>
                                 {% endfor %}

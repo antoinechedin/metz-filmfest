@@ -24,3 +24,16 @@ logout:
 admin:
   path: /admin
   controller: App\Controller\AdminController::index
+
+movieDetails:
+  path: /admin/film/{movieId}
+  controller: App\Controller\AdminController::movieDetails
+  requirements:
+    movieId: '\d+'
+
+deleteComment:
+  path: /admin/film/{movieId}/delete-comment/{commentId}
+  controller: App\Controller\AdminController::deleteComment
+  requirements:
+    movieId: '\d+'
+    commentId: '\d+'
