@@ -1,14 +1,14 @@
 homepage:
   path: /
-  controller: App\Controller\HomeController::homepage
+  controller: App\Controller\WebsiteController::homepage
 
 registrationRules:
   path: /support/reglement-d-inscription
-  controller: App\Controller\HomeController::registrationRules
+  controller: App\Controller\WebsiteController::registrationRules
 
 legalNotices:
   path: /support/mentions-legales/
-  controller: App\Controller\HomeController::legalNotices
+  controller: App\Controller\WebsiteController::legalNotices
 
 inscription:
   path: /inscription

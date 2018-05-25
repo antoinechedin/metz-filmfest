@@ -1,0 +1,74 @@
+{% extends "app.html.twig" %}
+
+{% block body %}
+    {% include "website/navbar.html.twig" %}
+
+    <main role="main">
+        {% include "website/wip.html.twig" %}
+        <div class="container-fluid homepage-poster py-5 px-0">
+            <div class="homepage-poster-spacer"></div>
+            <div class="container text-center my-5 px-0">
+                <a href="https://goo.gl/forms/t8FS9NQ710Cc6ixH3" class="btn btn-green btn-xl my-2 text-title">Participer au
+                    Festival</a>
+                <p>Les inscriptions sont ouvertes<br/>jusqu'au <strong>5 juillet 2018</strong> compris</p>
+                <a target="_blank" href="{{ path("registrationRules") }}" class="btn btn-secondary  my-2">
+                    <span class="oi oi-data-transfer-download" title="Download" aria-hidden="true"></span>
+                    Télécharger le règlement
+                </a>
+            </div>
+            <div class="homepage-poster-spacer"></div>
+        </div>
+        <div class="container-fluid py-5 bg-light">
+            <div class="container text-center">
+                <h1 class="display-4">Festival du Film Étudiant de Metz</h1>
+                <p class="lead">3<sup>ème</sup> Édition</p>
+                <hr class="my-2"/>
+                <p>Le Festival du Film Étudiant de Metz a pour principaux objectifs de faire découvrir de jeunes talents
+                    messins et de leur proposer un espace de diffusion artistique de qualité ; le tout dans une ambiance
+                    conviviale.<br/>Ellipse souhaite, à travers cette 3<sup>ème</sup> édition, continuer à donner un essor
+                    et une
+                    visibilité importante aux courts-métrages créatifs des étudiants.</p>
+                <p>Nous sommes donc fiers de vous convier à notre 3<sup>ème</sup> édition du Festival du Film Etudiant, que
+                    vous soyez
+                    participants ou spectateurs, soyez les bienvenus !</p>
+                <a href="javascript:void(0)" class="btn btn-green btn-lg my-2" data-toggle="popover" data-trigger="focus"
+                   data-placement="bottom" data-content="Bientôt disponible">Voir la programmation</a>
+            </div>
+        </div>
+
+        <div class="container-fluid pt-5 bg-dark text-center text-light">
+            <h1 class="display-4">Les Récompenses</h1>
+            <p class="lead">Informations supplémentaires bientôt disponibles</p>
+            <div class="row mt-5">
+                <div class="col-sm-6 col-lg-3 pb-5">
+                    <img class="img-fluid pb-3" src="{{ asset("svg/red-gold-medal.svg") }}" style="width: 50%">
+                    <h2>Le Graoully d'Or</h2>
+                    <p>Prix décerné par le Jury.</p>
+                </div>
+                <div class="col-sm-6 col-lg-3 pb-5">
+                    <img class="img-fluid pb-3" src="{{ asset("svg/red-silver-medal.svg") }}" style="width: 50%">
+                    <h2>Le Graoully d'Argent</h2>
+                    <p>Prix décerné par le public.</p>
+                </div>
+                <div class="col-sm-6 col-lg-3  pb-5">
+                    <img class="img-fluid pb-3" src="{{ asset("svg/green-gold-medal.svg") }}" style="width: 50%">
+                    <h2>Le Graoully d'Or de l’interprétation</h2>
+                    <p>Prix décerné par le Jury.</p>
+                </div>
+                <div class="col-sm-6 col-lg-3 pb-5">
+                    <img class="img-fluid pb-3" src="{{ asset("svg/green-silver-medal.svg") }}" style="width: 50%">
+                    <h2>Le Graoully d'Argent l’interprétation</h2>
+                    <p>Prix décerné par le public.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid py-5 bg-green text-light">
+            <div class="container text-center text-light">
+                <h1 class="display-4 mb-5">Le Jury</h1>
+                <p class="lead">Bientôt disponibles</p>
+            </div>
+        </div>
+    </main>
+    {% include "website/footer.html.twig" %}
+{% endblock %}
