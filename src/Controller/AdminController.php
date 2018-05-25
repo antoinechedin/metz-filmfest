@@ -23,7 +23,7 @@ class AdminController extends Controller
         $repository = $this->getDoctrine()->getRepository(Movie::class);
         $movies = $repository->findAll();
 
-        return $this->render("admin.html.twig", array(
+        return $this->render("admin/movieList.html.twig", array(
             "user" => $this->getUser(),
             "movies" => $movies
         ));
@@ -67,7 +67,7 @@ class AdminController extends Controller
         }
 
 
-        return $this->render("movie-details.html.twig", array(
+        return $this->render("admin/movieDetails.html.twig", array(
             "commentForm" => $form->createView(),
             "user" => $this->getUser(),
             "movie" => $movie

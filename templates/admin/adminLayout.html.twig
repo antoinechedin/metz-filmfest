@@ -1,0 +1,17 @@
+{% extends "app.html.twig" %}
+
+{% block title %}FFEM Administration{% endblock %}
+
+{% block stylesheet %}
+    <link href="{{ asset("build/css/admin.css") }}" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+    {% include "admin/navbar.html.twig" %}
+    <div class="container-fluid">
+        <div class="row">
+            {% include "admin/sidebar.html.twig" %}
+            {% block main %}{% endblock %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,91 @@
+{% extends "admin/adminLayout.html.twig" %}
+
+{% block main %}
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+            <div class=" container-fluid">
+                <h3 class="text-muted">{{ movie.title }} ({{ movie.completionDate|date("Y") }})</h3>
+                <h6 class="text-muted mb-3">{{ movie.duration }} min |
+                    {% for category in movie.categories %}
+                        <span class="badge badge-secondary">{{ category.name }}</span>
+                    {% endfor %}
+                </h6>
+                <p>{{ movie.synopsis }}</p>
+                <ul>
+                    <li>
+                        <strong>Réalisateur :</strong> {{ movie.director.firstname }} {{ movie.director.name }}
+                        | {{ movie.director.personalInformation.birthDate|date("d/m/Y") }}
+                    </li>
+                    <li>
+                        <strong>Études : </strong> {{ movie.director.personalInformation.studyPlace }}
+                        ({{ movie.director.personalInformation.studyYear }})
+                    </li>
+                    {% if movie.actor != null %}
+                        <li><strong>Acteur nominé : </strong> {{ movie.actor.firstname }} {{ movie.actor.name }}
+                        </li>
+                    {% else %}
+                        <li><strong>Pas d'acteur nominé</strong></li>
+                    {% endif %}
+                </ul>
+                <p>
+                    <a href="{{ movie.link }}">
+                        <span class="oi oi-link-intact" title="lien" aria-hidden="true"></span> {{ movie.link }}
+                    </a>
+                </p>
+                {% if movie.additionalInformation != null %}
+                    <p>{{ movie.additionalInformation }}</p>
+                {% else %}
+                    <p class="text-muted"><em>Pas d'informations supplémentaires</em></p>
+                {% endif %}
+
+                <div class="card my-3 shadow-sm">
+                    <div class="card-body">
+                        <h6 class="card-text border-bottom">Discussion</h6>
+                        <ul class="list-unstyled mb-0">
+                            {% for comment in movie.comments %}
+                                <li class="media card-text">
+                                    <p class="media-body small mb-2">
+                                        {% if comment.user != null %}
+                                            <strong class="d-block">{{ comment.user.firstName }} {{ comment.user.name }}</strong>
+                                        {% else %}
+                                            <strong class="d-block text-muted">[supprimé]</strong>
+                                        {% endif %}
+                                        {{ comment.message }}
+                                    </p>
+                                    {% if comment.user.id == user.id %}
+                                        <a href="{{ path("deleteComment", {"movieId": movie.id, "commentId": comment.id}) }}"
+                                           class="p-1 ml-2 align-self-center">
+                                                    <span class="oi oi-trash text-muted" title="supprimer"
+                                                          aria-hidden="true"></span>
+                                        </a>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+
+                        {{ form_start(commentForm) }}
+                        <div class="form-row mt-4">
+                            <div class="form-group mb-2 col">
+                                {{ form_widget(commentForm.message) }}
+                            </div>
+                            <div class="form-group mb-2 col-auto">
+                                {{ form_widget(commentForm.submit) }}
+                            </div>
+                        </div>
+                        {{ form_end(commentForm) }}
+                    </div>
+                </div>
+
+                <p class="text-center">
+                    <a href="#" class="btn btn-success mx-2" role="button">
+                        <span class="oi oi-check" title="accepter" aria-hidden="true"></span> Accepter
+                    </a>
+                    <a href="#" class="btn btn-danger mx-2" role="button">
+                        <span class="oi oi-x" title="refuser" aria-hidden="true"></span> Refuser
+                    </a>
+                </p>
+
+            </div>
+        </div>
+    </main>
+{% endblock %}
