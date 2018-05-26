@@ -45,3 +45,10 @@ accountSettings:
 deleteAccount:
   path: /admin/compte/supprimer
   controller: App\Controller\AdminController::deleteCurrentAccount
+
+shortlistMovie:
+  path: /admin/film/{movieId}/selectionner/{value}
+  controller: App\Controller\AdminController::shortlistMovie
+  requirements:
+      movieId: '\d+'
+      value: 'true|false|null'

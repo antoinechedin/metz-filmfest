@@ -1,11 +1,7 @@
 $theme-colors: (
         "green": #4b8271,
-        "secondary": #f1cb38
+        "yellow": #f1cb38
 );
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: "Bernard MT Condensed" !important;
-}
 
 @import "~bootstrap/scss/bootstrap";
 
@@ -53,6 +49,8 @@ main {
   height: 3vh;
 }
 
+@import url('https://fonts.googleapis.com/css?family=Lobster');
+
 .text-title {
-  font-family: "Bernard MT Condensed";
+  font-family: "Lobster", cursive;
 }

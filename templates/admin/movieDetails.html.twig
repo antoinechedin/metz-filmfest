@@ -38,11 +38,14 @@
             {% endif %}
 
             <p class="text-center mb-4">
-                <a href="#" class="btn btn-success mx-2" role="button">
-                    <span class="oi oi-check" title="accepter" aria-hidden="true"></span> Accepter
+                <a href="{{ path("shortlistMovie", {"movieId": movie.id, "value": "true"}) }}" class="mx-2 btn {% if movie.shortlisted %}btn-outline-secondary disabled{% else %}btn-success{% endif %}" role="button">
+                    <span class="oi oi-check" title="accepter" aria-hidden="true"></span> Sélectionner le film
                 </a>
-                <a href="#" class="btn btn-danger mx-2" role="button">
-                    <span class="oi oi-x" title="refuser" aria-hidden="true"></span> Refuser
+                <a href="{{ path("shortlistMovie", {"movieId": movie.id, "value": "false"}) }}" class="mx-2 btn {% if movie.shortlisted is same as(false) %}btn-outline-secondary disabled{% else %}btn-danger{% endif %}" role="button">
+                    <span class="oi oi-x" title="refuser" aria-hidden="true"></span> Éliminer le film
+                </a>
+                <a href="{{ path("shortlistMovie", {"movieId": movie.id, "value": "null"}) }}" class="mx-2 btn {% if movie.shortlisted is null %}btn-outline-secondary disabled{% else %}btn-warning{% endif %}" role="button">
+                    <span class="oi oi-reload" title="reset" aria-hidden="true"></span> Réinitialiser
                 </a>
             </p>
 

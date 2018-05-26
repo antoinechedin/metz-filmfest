@@ -27,9 +27,25 @@ class AdminController extends Controller
         $repository = $this->getDoctrine()->getRepository(Movie::class);
         $movies = $repository->findAll();
 
+        $waitingMovies = array();
+        $selectedMovies = array();
+        $eliminatedMovies = array();
+
+        foreach ($movies as $movie){
+            if($movie->getShortlisted() === null){
+                $waitingMovies[] = $movie;
+            } else if ($movie->getShortlisted()){
+                $selectedMovies[] = $movie;
+            } else {
+                $eliminatedMovies[] = $movie;
+            }
+        }
+
         return $this->render("admin/movieList.html.twig", array(
             "user" => $this->getUser(),
-            "movies" => $movies
+            "waitingMovies" => $waitingMovies,
+            "selectedMovies" => $selectedMovies,
+            "eliminatedMovies" => $eliminatedMovies
         ));
     }
 
@@ -120,7 +136,7 @@ class AdminController extends Controller
         ));
     }
 
-    public function deleteCurrentAccount(TokenStorageInterface$tokenStorage)
+    public function deleteCurrentAccount(TokenStorageInterface $tokenStorage)
     {
         $entityManager = $this->getDoctrine()->getManager();
         $user = $entityManager->getRepository(User::class)->find($this->getUser()->getId());
@@ -132,5 +148,22 @@ class AdminController extends Controller
         $entityManager->flush();
 
         return $this->redirectToRoute("homepage");
+    }
+
+    public function shortlistMovie($movieId, $value)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $movie = $entityManager->getRepository(Movie::class)->find($movieId);
+
+        if ($value == "true") {
+            $movie->setShortlisted(true);
+        } elseif ($value == "false") {
+            $movie->setShortlisted(false);
+        } elseif ($value == "null") {
+            $movie->setShortlisted(null);
+        }
+
+        $entityManager->flush();
+        return $this->redirectToRoute("admin");
     }
 }
