@@ -11,9 +11,13 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Entity\Movie;
+use App\Entity\User;
 use App\Form\CommentType;
+use App\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class AdminController extends Controller
@@ -39,11 +43,11 @@ class AdminController extends Controller
 
         return $this->render("login.html.twig", array(
             "last_username" => $lastUsername,
-            "error"         => $error,
+            "error" => $error,
         ));
     }
 
-    public function  movieDetails(Request $request, $movieId)
+    public function movieDetails(Request $request, $movieId)
     {
         $repository = $this->getDoctrine()->getRepository(Movie::class);
         $movie = $repository->find($movieId);
@@ -66,7 +70,6 @@ class AdminController extends Controller
             return $this->redirect($request->getUri());
         }
 
-
         return $this->render("admin/movieDetails.html.twig", array(
             "commentForm" => $form->createView(),
             "user" => $this->getUser(),
@@ -74,7 +77,8 @@ class AdminController extends Controller
         ));
     }
 
-    public function deleteComment($movieId, $commentId) {
+    public function deleteComment($movieId, $commentId)
+    {
         $repository = $this->getDoctrine()->getRepository(Comment::class);
         $comment = $repository->find($commentId);
         $userId = $this->getUser()->getId();
@@ -88,6 +92,45 @@ class AdminController extends Controller
         }
 
         //TODO return an error if th user or the movie doesn't match
-        return $this->redirect($this->generateUrl("movieDetails", array("movieId"=>$movieId)));
+        return $this->redirect($this->generateUrl("movieDetails", array("movieId" => $movieId)));
+    }
+
+    public function accountSettings(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $user = $entityManager->getRepository(User::class)->find($this->getUser()->getId());
+
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            if ($form->get("changePassword")->getData() && $user->getPlainPassword() != null) {
+                $user->setPassword($passwordEncoder->encodePassword($user, $user->getPlainPassword()));
+            }
+
+            $entityManager->flush();
+            return $this->redirectToRoute("accountSettings");
+        }
+
+        return $this->render("admin/accountSettings.html.twig", array(
+            "form" => $form->createView(),
+            "user" => $this->getUser(),
+            "changePassword" => $form->get("changePassword")->getData()
+        ));
+    }
+
+    public function deleteCurrentAccount(TokenStorageInterface$tokenStorage)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $user = $entityManager->getRepository(User::class)->find($this->getUser()->getId());
+
+        $tokenStorage->setToken(null);
+        $this->get("session")->invalidate();
+
+        $entityManager->remove($user);
+        $entityManager->flush();
+
+        return $this->redirectToRoute("homepage");
     }
 }

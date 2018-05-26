@@ -10,7 +10,7 @@
         </h6>
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link active" href="{{ path("admin") }}">
+                <a class="nav-link{% if app.request.pathinfo == path("admin") %} active{% endif %}" href="{{ path("admin") }}">
                     <span class="oi oi-video" title="courts-métrage" aria-hidden="true"></span>
                     Liste des courts-métrages
                 </a>
@@ -22,7 +22,7 @@
         </h6>
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link{% if app.request.pathinfo == path("accountSettings") %} active{% endif %}" href="{{ path("accountSettings") }}">
                     <span class="oi oi-cog" title="réglages" aria-hidden="true"></span>
                     Réglages
                 </a>

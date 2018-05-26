@@ -19,16 +19,17 @@ class ActorType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add("firstName", TextType::class, array(
-            "attr" => array(
-                "placeholder" => "First name"
-            )
-        ));
-        $builder->add("name", TextType::class, array(
-            "attr" => array(
-                "placeholder" => "Name"
-            )
-        ));
+        $builder
+            ->add("firstName", TextType::class, array(
+                "attr" => array(
+                    "placeholder" => "First name"
+                )
+            ))
+            ->add("name", TextType::class, array(
+                "attr" => array(
+                    "placeholder" => "Name"
+                )
+            ));
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -22,6 +22,14 @@
                 <source>You cannot specify more than {{ limit }} categories</source>
                 <target>Vous ne pouvez pas renseigner plus de {{ limit }} genres</target>
             </trans-unit>
+            <trans-unit id="validEmail">
+                <source>This value is not a valid email address.</source>
+                <target>Veuillez renseigner une adresse email valide.</target>
+            </trans-unit>
+            <trans-unit id="emailTaken">
+                <source>Email already taken.</source>
+                <target>Cet email est déjà pris, veuillez en choisir un autre.</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

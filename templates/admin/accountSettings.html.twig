@@ -1,0 +1,42 @@
+{% extends "admin/adminLayout.html.twig" %}
+
+{% block main %}
+    <h2 class="border-bottom pb-2 mb-3">Vos informations</h2>
+    <div class="container-fluid m-3">
+        {{ form_start(form) }}
+        {{ form_row(form.firstName) }}
+        {{ form_row(form.name) }}
+        {{ form_row(form.email) }}
+        {{ form_row(form.changePassword) }}
+        <div id="collapsePassword" class="collapse {% if changePassword %}{{ "show" }}{% endif %}">
+            {{ form_row(form.plainPassword) }}
+        </div>
+        {{ form_end(form) }}
+    </div>
+    <h2 class="border-bottom border-danger text-danger pb-2 mt-5 mb-3">Danger zone</h2>
+    <div class="container-fluid m-3">
+    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteAccountModal">Supprimer mon compte</button>
+    </div>
+
+    <div id="deleteAccountModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteAccountModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger">Supprimer mon compte</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Attention !</strong> Vous êtes sur le point de supprimer votre compte et cette action est <strong>irréversible</strong>.</p>
+                    <p>Êtes-vous vraiment sûr de vouloir continuer ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Non, c'est une erreur</button>
+                    <a href="{{ path("deleteAccount") }}" class="btn btn-danger">Oui je suis sûr</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

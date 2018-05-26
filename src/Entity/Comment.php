@@ -18,11 +18,6 @@ class Comment
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="comments")
-     */
-    private $user;
-
-    /**
      * @ORM\Column(type="text")
      * @Assert\NotBlank()
      * @Assert\Type("string")
@@ -35,21 +30,15 @@ class Comment
      */
     private $movie;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="comments")
+     * @ORM\JoinColumn(onDelete="SET NULL")
+     */
+    private $user;
+
     public function getId()
     {
         return $this->id;
-    }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
-
-        return $this;
     }
 
     public function getMessage(): ?string
@@ -72,6 +61,18 @@ class Comment
     public function setMovie(?Movie $movie): self
     {
         $this->movie = $movie;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

@@ -37,3 +37,11 @@ deleteComment:
   requirements:
     movieId: '\d+'
     commentId: '\d+'
+
+accountSettings:
+  path: /admin/compte/reglages
+  controller: App\Controller\AdminController::accountSettings
+
+deleteAccount:
+  path: /admin/compte/supprimer
+  controller: App\Controller\AdminController::deleteCurrentAccount
