@@ -34,9 +34,11 @@ class MovieType extends AbstractType
                     "placeholder" => "Title"
                 )
             ))
-            ->add("completionDate", DateType::class, array(
-                "years" => range(date("Y") - 2, date("Y")),
-                "format" => "ddMMMMyyyy",
+            ->add("year", IntegerType::class, array(
+                "label" => "Movie's year",
+                "attr" => array(
+                    "placeholder" => "Year"
+                )
             ))
             ->add("duration", IntegerType::class, array(
                 "label" => "Duration (in minutes)",
@@ -52,7 +54,9 @@ class MovieType extends AbstractType
                 "required" => true
             ))
             ->add("synopsis", TextareaType::class, array(
-                "required" => false
+                "attr" => array(
+                    "placeholder" => "Synopsis"
+                )
             ))
             ->add("nominateActor", CheckboxType::class, array(
                 "label" => "I would like to nominate an actor for the acting award",

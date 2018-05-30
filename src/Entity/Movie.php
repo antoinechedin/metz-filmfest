@@ -34,11 +34,11 @@ class Movie
     private $duration;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="integer")
      * @Assert\NotBlank()
-     * @Assert\Date()
+     * @Assert\Type("integer")
      */
-    private $completionDate;
+    private $year;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Director", cascade={"persist", "remove"})
@@ -130,14 +130,14 @@ class Movie
         return $this;
     }
 
-    public function getCompletionDate(): ?\DateTimeInterface
+    public function getYear(): ?int
     {
-        return $this->completionDate;
+        return $this->year;
     }
 
-    public function setCompletionDate(\DateTimeInterface $completionDate): self
+    public function setYear(int $year): self
     {
-        $this->completionDate = $completionDate;
+        $this->year = $year;
 
         return $this;
     }

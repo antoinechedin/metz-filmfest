@@ -54,6 +54,10 @@
                 <source>Completion date</source>
                 <target>Date de réalisation</target>
             </trans-unit>
+            <trans-unit id="movieYear">
+                <source>Movie's year</source>
+                <target>Année de réalisation</target>
+            </trans-unit>
             <trans-unit id="duration">
                 <source>Duration</source>
                 <target>Durée</target>
