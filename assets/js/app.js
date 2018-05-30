@@ -5,4 +5,4 @@ $(function () {
     $('[data-toggle="popover"]').popover()
 });
 
-$('#registrationModal').modal('show');
+$('#flashMessageModal').modal('show');

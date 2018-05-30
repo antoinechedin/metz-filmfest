@@ -38,5 +38,21 @@
             </div>
         </div>
     </div>
+    {% for message in app.flashes("flashMessageModal") %}
+        <div class="modal fade" id="flashMessageModal" tabindex="-1" role="dialog" aria-labelledby="flashMessageModal"
+             aria-hidden="true">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <p>Vos données personnelles ont été mises à jour.</p>
+                        <button type="button" class="btn btn-success mx-auto d-block" data-dismiss="modal">Fermer cette
+                            fenêtre
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    {% endfor %}
 
 {% endblock %}

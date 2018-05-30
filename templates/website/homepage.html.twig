@@ -94,8 +94,8 @@
 
     </main>
     {% include "website/footer.html.twig" %}
-    {% for message in app.flashes("registration") %}
-        <div class="modal fade" id="registrationModal" tabindex="-1" role="dialog" aria-labelledby="registrationModal"
+    {% for message in app.flashes("flashMessageModal") %}
+        <div class="modal fade" id="flashMessageModal" tabindex="-1" role="dialog" aria-labelledby="flashMessageModal"
              aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">

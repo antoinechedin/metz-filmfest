@@ -31,10 +31,10 @@ class AdminController extends Controller
         $selectedMovies = array();
         $eliminatedMovies = array();
 
-        foreach ($movies as $movie){
-            if($movie->getShortlisted() === null){
+        foreach ($movies as $movie) {
+            if ($movie->getShortlisted() === null) {
                 $waitingMovies[] = $movie;
-            } else if ($movie->getShortlisted()){
+            } else if ($movie->getShortlisted()) {
                 $selectedMovies[] = $movie;
             } else {
                 $eliminatedMovies[] = $movie;
@@ -126,6 +126,12 @@ class AdminController extends Controller
             }
 
             $entityManager->flush();
+
+            $this->addFlash(
+                "flashMessageModal",
+                ""
+            );
+
             return $this->redirectToRoute("accountSettings");
         }
 

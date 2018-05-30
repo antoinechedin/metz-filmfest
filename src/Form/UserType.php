@@ -48,8 +48,11 @@ class UserType extends AbstractType
                     "label" => "New password"),
                 "second_options" => array(
                     "label" => "Repeat password")
-            ))->add("updateData", SubmitType::class
-            );
+            ))->add("updateData", SubmitType::class, array(
+                "attr" => array(
+                    "class" => "btn btn-success"
+                )
+            ));
     }
 
     public function configureOptions(OptionsResolver $resolver)

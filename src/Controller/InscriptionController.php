@@ -36,7 +36,7 @@ class InscriptionController extends Controller
             $entityManager->flush();
 
             $this->addFlash(
-                "registration",
+                "flashMessageModal",
                 ""
             );
 
