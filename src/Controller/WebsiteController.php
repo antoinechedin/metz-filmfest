@@ -26,6 +26,6 @@ class WebsiteController extends Controller
 
     public function legalNotices()
     {
-        return $this->render("legal-notices.html.twig");
+        return $this->render("website/legal-notices.html.twig");
     }
 }

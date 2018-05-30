@@ -1,0 +1,23 @@
+{% extends "app.html.twig" %}
+
+{% block body %}
+    {% include "website/navbar.html.twig" %}
+
+<main role="main">
+    <div class="container-fluid d-md-none">
+        <div class="container py-5 text-justify">
+            {% include "website/legal-notices-text.html.twig" %}
+        </div>
+    </div>
+    <div class="container-fluid bg-yellow d-none d-md-block">
+        <div class="container py-5">
+            <div class="card text-justify">
+                <div class="card-body">
+                    {% include "website/legal-notices-text.html.twig" %}
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+    {% include "website/footer.html.twig" %}
+{% endblock %}
