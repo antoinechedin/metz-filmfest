@@ -35,11 +35,17 @@ class InscriptionController extends Controller
             $entityManager->persist($movie);
             $entityManager->flush();
 
+            $this->addFlash(
+                "flashMessageModal",
+                ""
+            );
+
             return $this->redirectToRoute("homepage");
         }
 
-        return $this->render('inscription.html.twig', [
+        return $this->render('website/inscription.html.twig', [
             "form" => $form->createView(),
+            "mobileForm" => $form->createView(),
             "nominateActor" => $form->get("nominateActor")->getData()
         ]);
     }

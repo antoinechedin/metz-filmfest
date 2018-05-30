@@ -1,0 +1,22 @@
+{% extends "app.html.twig" %}
+
+{% block body %}
+    {% include "website/navbar.html.twig" %}
+    <main role="main">
+        <div class="container-fluid registration-poster d-none d-sm-block">
+            <div class="container p-0 bg-white border-dark border-right border-left"
+                 style="border-width: 3px !important; border-color: black !important;">
+                <div class="py-4 px-5">
+                    {% include "website/registrationForm.html.twig" with{"form": form} %}
+                </div>
+                <div>{% include "website/footer.html.twig" %}</div>
+            </div>
+        </div>
+        <div class="container-fluid d-block d-sm-none pb-4">
+            {% include "website/registrationForm.html.twig" with{"form": mobileForm} %}
+        </div>
+        <div class="d-block d-sm-none">
+            {% include "website/footer.html.twig" %}
+        </div>
+    </main>
+{% endblock %}

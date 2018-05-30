@@ -1,0 +1,55 @@
+<h1 class="display-4 text-center text-title mt-3">Formulaire d'inscription</h1>
+{% if not form.vars.valid %}
+    <div class="alert alert-danger" role="alert">
+        Votre formulaire d'inscription n'est pas <strong>valide</strong>. Si le problème persiste,
+        veuillez
+        recharger la page.
+    </div>
+    <hr/>
+{% endif %}
+{{ form_start(form, {'attr': {'novalidate': 'novalidate', "class": "px-3"}}) }}
+<h1 class="display-5 mt-5 text-title">Informations personnelles</h1>
+<div class="form-row">
+    <div class="col">
+        {{ form_row(form.director.firstName) }}
+    </div>
+    <div class="col">
+        {{ form_row(form.director.name) }}
+    </div>
+</div>
+<div class="form-row">
+    <div class="col">
+        {{ form_row(form.director.personalInformation.birthDate) }}
+    </div>
+</div>
+<div class="form-row">
+    <div class="col">
+        {{ form_row(form.director.personalInformation.email) }}
+    </div>
+</div>
+<h1 class="display-5 mt-4 text-title">Vos études sur Metz-Nancy</h1>
+{{ form_row(form.director.personalInformation.studyYear) }}
+{{ form_row(form.director.personalInformation.studyPlace) }}
+<h1 class="display-5 mt-5 text-title">Votre court-métrage</h1>
+{{ form_row(form.title) }}
+{{ form_row(form.year) }}
+{{ form_row(form.duration) }}
+{{ form_row(form.categories, {label_attr: {class: 'checkbox-custom'} }) }}
+{{ form_row(form.synopsis) }}
+{{ form_row(form.nominateActor, {label_attr: {class: 'checkbox-custom'} }) }}
+<div id="collapseActor" aria-expanded="false"
+     class="collapse {% if nominateActor %}{{ "show" }}{% endif %}">
+    <div class="form-row">
+        <div class="col form-group">
+            {{ form_row(form.actor.firstName) }}
+        </div>
+        <div class="col form-group">
+            {{ form_row(form.actor.name) }}
+        </div>
+    </div>
+</div>
+{{ form_row(form.link) }}
+{{ form_row(form.additionalInformation) }}
+<a target="_blank" href="{{ path("registrationRules") }}">Lien vers le règlement du festival</a>
+{{ form_row(form.agreeTerms, {label_attr: {class: 'checkbox-custom'}}) }}
+{{ form_end(form) }}

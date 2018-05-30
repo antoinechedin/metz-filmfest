@@ -32,9 +32,9 @@ class PersonalInformation
     private $birthDate;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="integer")
      * @Assert\NotBlank()
-     * @Assert\Type("string")
+     * @Assert\Type("integer")
      *
      */
     private $studyYear;
@@ -75,12 +75,12 @@ class PersonalInformation
         return $this;
     }
 
-    public function getStudyYear(): ?string
+    public function getStudyYear(): ?int
     {
         return $this->studyYear;
     }
 
-    public function setStudyYear(string $studyYear): self
+    public function setStudyYear(int $studyYear): self
     {
         $this->studyYear = $studyYear;
 

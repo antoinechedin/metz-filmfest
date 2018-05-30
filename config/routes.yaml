@@ -1,15 +1,54 @@
 homepage:
   path: /
-  controller: App\Controller\HomeController::homepage
+  controller: App\Controller\WebsiteController::homepage
 
 registrationRules:
   path: /support/reglement-d-inscription
-  controller: App\Controller\HomeController::registrationRules
+  controller: App\Controller\WebsiteController::registrationRules
 
 legalNotices:
   path: /support/mentions-legales/
-  controller: App\Controller\HomeController::legalNotices
+  controller: App\Controller\WebsiteController::legalNotices
 
 inscription:
   path: /inscription
   controller: App\Controller\InscriptionController::index
+
+login:
+  path: /login
+  controller: App\Controller\AdminController::login
+
+logout:
+  path: /logout
+
+admin:
+  path: /admin
+  controller: App\Controller\AdminController::index
+
+movieDetails:
+  path: /admin/film/{movieId}
+  controller: App\Controller\AdminController::movieDetails
+  requirements:
+    movieId: '\d+'
+
+deleteComment:
+  path: /admin/film/{movieId}/delete-comment/{commentId}
+  controller: App\Controller\AdminController::deleteComment
+  requirements:
+    movieId: '\d+'
+    commentId: '\d+'
+
+accountSettings:
+  path: /admin/compte/reglages
+  controller: App\Controller\AdminController::accountSettings
+
+deleteAccount:
+  path: /admin/compte/supprimer
+  controller: App\Controller\AdminController::deleteCurrentAccount
+
+shortlistMovie:
+  path: /admin/film/{movieId}/selectionner/{value}
+  controller: App\Controller\AdminController::shortlistMovie
+  requirements:
+      movieId: '\d+'
+      value: 'true|false|null'

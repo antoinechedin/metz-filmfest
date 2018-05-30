@@ -1,0 +1,38 @@
+<header>
+    <nav role="navigation" class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand py-1" href="{{ path("homepage") }}" tabindex="1">
+            <img src="{{ asset("svg/ffem.svg") }}" height="32"/>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path("inscription") }}" tabindex="2">Participer au
+                        festival</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0)" tabindex="3" data-toggle="popover"
+                       data-trigger="focus" data-placement="bottom" data-content="Bientôt disponible">Programmation</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0)" tabindex="4" data-toggle="popover"
+                       data-trigger="focus" data-placement="bottom" data-content="Bientôt disponible">Infos
+                        Pratiques</a>
+                </li>
+                {#<li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0)" tabindex="5" data-toggle="popover" data-trigger="focus" data-placement="bottom" data-content="Bientôt disponible">Anciennes éditions</a>
+                </li>#}
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="https://www.facebook.com/metzfilmfest/" tabindex="5">
+                        <img src="{{ asset("svg/facebook-letter-logo.svg") }}" class="icon-lg"/>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>

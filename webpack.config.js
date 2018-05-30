@@ -14,6 +14,7 @@ Encore
     .addEntry('js/app', './assets/js/app.js')
     .addStyleEntry('css/app', './assets/css/app.scss')
     .addStyleEntry('css/oi', './assets/css/open-iconic-bootstrap.scss')
+    .addStyleEntry('css/admin', './assets/css/admin.scss')
 
     .enableSassLoader(function (sassOptions) {
     }, {
