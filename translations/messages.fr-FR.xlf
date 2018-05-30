@@ -54,6 +54,10 @@
                 <source>Completion date</source>
                 <target>Date de réalisation</target>
             </trans-unit>
+            <trans-unit id="movieYear">
+                <source>Movie's year</source>
+                <target>Année de réalisation</target>
+            </trans-unit>
             <trans-unit id="duration">
                 <source>Duration</source>
                 <target>Durée</target>
@@ -90,6 +94,10 @@
                 <source>Submit</source>
                 <target>Envoyer</target>
             </trans-unit>
+            <trans-unit id="message">
+                <source>Message</source>
+                <target>Message</target>
+            </trans-unit>
             <trans-unit id="synopsis">
                 <source>Synopsis</source>
                 <target>Synopsis</target>
@@ -97,6 +105,22 @@
             <trans-unit id="agreeTerms">
                 <source>I have read, understand and agree to the terms and conditions of the festival's rules</source>
                 <target>J'ai lu, compris et accepte les termes et conditions du règlement du festival</target>
+            </trans-unit>
+            <trans-unit id="changePassword">
+                <source>Change password</source>
+                <target>Changer de mot de passe</target>
+            </trans-unit>
+            <trans-unit id="newPassword">
+                <source>New password</source>
+                <target>Nouveau mot de passe</target>
+            </trans-unit>
+            <trans-unit id="repeatPassword">
+                <source>Repeat password</source>
+                <target>Confirmer mot de passe</target>
+            </trans-unit>
+            <trans-unit id="updateData">
+                <source>Update data</source>
+                <target>Valider les modifications</target>
             </trans-unit>
         </body>
     </file>

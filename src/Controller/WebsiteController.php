@@ -12,11 +12,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
-class HomeController extends Controller
+class WebsiteController extends Controller
 {
     public function homepage()
     {
-        return $this->render("homepage.html.twig");
+        return $this->render("website/homepage.html.twig");
     }
 
     public function registrationRules()
@@ -26,6 +26,6 @@ class HomeController extends Controller
 
     public function legalNotices()
     {
-        return $this->render("legal-notices.html.twig");
+        return $this->render("website/legal-notices.html.twig");
     }
 }

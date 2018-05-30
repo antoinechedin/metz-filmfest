@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    {#<meta name="description" content=""/> TODO #}
+    {#<meta name="author" content=""/> TODO#}
+
+    {# Open Graph Protocol tags #}
+    <meta property="og:url" content="https://metz-filmfest.fr"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:title" content="Festival du Film Étudiant de Metz"/>
+    <meta property="og:description"
+    content="Le Festival a pour principaux objectifs de faire découvrir de jeunes talents messins et de leur proposer un espace de diffusion artistique de qualité."/>
+    <meta property="og:image" content="https://metz-filmfest.fr/website_poster.png"/>
+    <meta name="twitter:card" content="summary_large_image"/>
+
+    <title>{% block title %}Festival du Film Étudiant de Metz{% endblock %}</title>
+
+    <link rel="icon" href="{{ asset("favicon.ico") }}">
+    <link href="{{ asset("build/css/app.css") }}" rel="stylesheet">
+    <link href="{{ asset("build/css/oi.css") }}" rel="stylesheet">
+    {% block stylesheet %}{% endblock %}
+
+    {# Cookies consent #}
+    <link rel="stylesheet" type="text/css"
+          href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css"/>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
+    <script>
+        window.addEventListener("load", function () {
+            window.cookieconsent.initialise({
+                "palette": {
+                    "popup": {
+                        "background": "#000"
+                    },
+                    "button": {
+                        "background": "#f1d600"
+                    }
+                },
+                "theme": "edgeless",
+                "position": "bottom-right",
+                "content": {
+                    "message": "En poursuivant votre navigation sur ce site, vous acceptez l'utilisation de cookies pour améliorer le fonctionnement du site.",
+                    "dismiss": "Compris !",
+                    "link": "En savoir plus sur les cookies",
+                    "href": "http://fr.webedia-group.com/cookies"
+                }
+            })
+        });
+    </script>
+</head>
+<body>
+{% block body %}{% endblock %}
+</body>
+<script src="{{ asset("build/js/app.js") }}"></script>
+</html>

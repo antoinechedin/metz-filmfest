@@ -1,11 +1,7 @@
 $theme-colors: (
         "green": #4b8271,
-        "secondary": #f1cb38
+        "yellow": #f1cb38
 );
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: "Bernard MT Condensed" !important;
-}
 
 @import "~bootstrap/scss/bootstrap";
 
@@ -49,10 +45,24 @@ main {
   background-size: cover;
 }
 
+.registration-poster {
+  background: url("../img/registration_posetr.jpg");
+  background-position: center;
+  background-repeat: repeat-y;
+  background-size: contain;
+}
+
 .homepage-poster-spacer {
-  height: 3vh;
+  height: 10vh;
+}
+
+
+@import url('https://fonts.googleapis.com/css?family=Lobster|Roboto+Slab');
+
+body {
+  font-family: 'Roboto Slab', serif;
 }
 
 .text-title {
-  font-family: "Bernard MT Condensed";
+  font-family: "Lobster", cursive;
 }
