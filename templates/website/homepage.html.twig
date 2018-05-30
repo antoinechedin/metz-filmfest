@@ -91,6 +91,24 @@
                     en leur offrant des moyens techniques et un accompagnement.</p>
             </div>
         </div>
+
     </main>
     {% include "website/footer.html.twig" %}
+    {% for message in app.flashes("registration") %}
+        <div class="modal fade" id="registrationModal" tabindex="-1" role="dialog" aria-labelledby="registrationModal"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <p>Merci pour votre inscription, nous allons désormais étudier votre candidature. Nous vous
+                            tiendrons informés par mail.</p>
+                        <button type="button" class="btn btn-success mx-auto d-block" data-dismiss="modal">Fermer cette
+                            fenêtre
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    {% endfor %}
 {% endblock %}

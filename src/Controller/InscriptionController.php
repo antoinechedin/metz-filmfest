@@ -35,6 +35,11 @@ class InscriptionController extends Controller
             $entityManager->persist($movie);
             $entityManager->flush();
 
+            $this->addFlash(
+                "registration",
+                ""
+            );
+
             return $this->redirectToRoute("homepage");
         }
 
