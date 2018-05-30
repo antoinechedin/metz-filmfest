@@ -38,8 +38,9 @@ class InscriptionController extends Controller
             return $this->redirectToRoute("homepage");
         }
 
-        return $this->render('inscription.html.twig', [
+        return $this->render('website/inscription.html.twig', [
             "form" => $form->createView(),
+            "mobileForm" => $form->createView(),
             "nominateActor" => $form->get("nominateActor")->getData()
         ]);
     }

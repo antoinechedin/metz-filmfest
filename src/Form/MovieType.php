@@ -85,7 +85,11 @@ class MovieType extends AbstractType
                 "constraints" => new isTrue(),
                 "mapped" => false
             ))
-            ->add("submit", SubmitType::class);
+            ->add("submit", SubmitType::class, array(
+                "attr" => array(
+                    "class" => "btn btn-success"
+                )
+            ));
     }
 
     public function configureOptions(OptionsResolver $resolver)

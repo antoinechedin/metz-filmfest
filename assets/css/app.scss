@@ -45,11 +45,23 @@ main {
   background-size: cover;
 }
 
-.homepage-poster-spacer {
-  height: 3vh;
+.registration-poster {
+  background: url("../img/registration_posetr.jpg");
+  background-position: center;
+  background-repeat: repeat-y;
+  background-size: contain;
 }
 
-@import url('https://fonts.googleapis.com/css?family=Lobster');
+.homepage-poster-spacer {
+  height: 10vh;
+}
+
+
+@import url('https://fonts.googleapis.com/css?family=Lobster|Roboto+Slab');
+
+body {
+  font-family: 'Roboto Slab', serif;
+}
 
 .text-title {
   font-family: "Lobster", cursive;
