@@ -3,7 +3,7 @@
 {% block main %}
     <div class="pt-3 pb-2 mb-3">
         <div class=" container-fluid">
-            <h3 class="text-muted">{{ movie.title }} ({{ movie.completionDate|date("Y") }})</h3>
+            <h3 class="text-muted">{{ movie.title }} ({{ movie.year }})</h3>
             <h6 class="text-muted mb-3">{{ movie.duration }} min |
                 {% for category in movie.categories %}
                     <span class="badge badge-secondary">{{ category.name }}</span>
