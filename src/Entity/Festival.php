@@ -1,0 +1,103 @@
+<?php
+
+namespace App\Entity;
+
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity(repositoryClass="App\Repository\FestivalRepository")
+ */
+class Festival
+{
+    /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     */
+    private $id;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Movie", mappedBy="festival")
+     */
+    private $moviesRegistered;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ScreeningDay", mappedBy="festival")
+     */
+    private $screeningDays;
+
+    public function __construct()
+    {
+        $this->moviesRegistered = new ArrayCollection();
+        $this->screeningDays = new ArrayCollection();
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return Collection|Movie[]
+     */
+    public function getMoviesRegistered(): Collection
+    {
+        return $this->moviesRegistered;
+    }
+
+    public function addMoviesRegistered(Movie $moviesRegistered): self
+    {
+        if (!$this->moviesRegistered->contains($moviesRegistered)) {
+            $this->moviesRegistered[] = $moviesRegistered;
+            $moviesRegistered->setFestival($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMoviesRegistered(Movie $moviesRegistered): self
+    {
+        if ($this->moviesRegistered->contains($moviesRegistered)) {
+            $this->moviesRegistered->removeElement($moviesRegistered);
+            // set the owning side to null (unless already changed)
+            if ($moviesRegistered->getFestival() === $this) {
+                $moviesRegistered->setFestival(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ScreeningDay[]
+     */
+    public function getScreeningDays(): Collection
+    {
+        return $this->screeningDays;
+    }
+
+    public function addScreeningDay(ScreeningDay $screeningDay): self
+    {
+        if (!$this->screeningDays->contains($screeningDay)) {
+            $this->screeningDays[] = $screeningDay;
+            $screeningDay->setFestival($this);
+        }
+
+        return $this;
+    }
+
+    public function removeScreeningDay(ScreeningDay $screeningDay): self
+    {
+        if ($this->screeningDays->contains($screeningDay)) {
+            $this->screeningDays->removeElement($screeningDay);
+            // set the owning side to null (unless already changed)
+            if ($screeningDay->getFestival() === $this) {
+                $screeningDay->setFestival(null);
+            }
+        }
+
+        return $this;
+    }
+}
