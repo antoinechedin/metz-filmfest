@@ -19,6 +19,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\EventListener\AbstractSessionListener;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -34,6 +36,7 @@ class AdminController extends Controller
         $selectedMovies = array();
         $eliminatedMovies = array();
 
+        /* @var $movie Movie */
         foreach ($movies as $movie) {
             if ($movie->getShortlisted() === null) {
                 $waitingMovies[] = $movie;
@@ -178,12 +181,16 @@ class AdminController extends Controller
 
     public function adminSchedule(Request $request)
     {
-        $entityManager = $this->getDoctrine()->getManager();
-        $movieRepository = $entityManager->getRepository(Movie::class);
-        $screeningDayRepository = $entityManager->getRepository(ScreeningDay::class);
-        $movies = $movieRepository->findAll();
-        $screeningDays = $screeningDayRepository->findAll();
+        $response = new Response();
+        $response->headers->set(AbstractSessionListener::NO_AUTO_CACHE_CONTROL_HEADER, 'true');
 
+        $entityManager = $this->getDoctrine()->getManager();
+        $screeningDayRepository = $entityManager->getRepository(ScreeningDay::class);
+        $screeningDays = $screeningDayRepository->findAll();
+        $movieRepository = $entityManager->getRepository(Movie::class);
+        $movies = $movieRepository->findAll();
+
+        // Handle POST
         $postData = array();
         $formBuilder = $this->createFormBuilder($postData)
             ->add("day0", HiddenType::class, array(
@@ -201,13 +208,13 @@ class AdminController extends Controller
             )
         ));
         $form = $formBuilder->getForm();
-
         $form->handleRequest($request);
 
+        // If form submitted
         if ($form->isSubmitted() && $form->isValid()) {
             $postData = $form->getData();
 
-            // Set the screeningDay to null
+            // Set all unscreened shorts
             foreach (explode(",", $postData["day0"]) as $movieId) {
                 $movie = $movieRepository->find($movieId);
                 if ($movie != null) {
@@ -215,14 +222,15 @@ class AdminController extends Controller
                     $movie->setScreeningDayIndex(null);
                 }
             }
-
-            // Remove unscreened movies from the post data
+            // Remove unscreened shorts from the post data
             array_splice($postData, 0, 1);
+
+            // Set all shorts into their screening day with the right index
             foreach ($postData as $screeningDayIdStr => $scheduleStr) {
                 // Retrieve the screening day and clear the screened movie list
                 $screeningDay = $screeningDayRepository->find(substr($screeningDayIdStr, 3));
                 $screeningDay->clearScreenedMovies();
-                // For each movie set in the screening day and the screening day index
+                // Iterate over the retrieved string to set screening day and index
                 foreach (explode(",", $scheduleStr) as $index => $movieId) {
                     $movie = $movieRepository->find($movieId);
                     if ($movie != null) {
@@ -232,20 +240,13 @@ class AdminController extends Controller
                 }
             }
 
+            // Flush changes
             $entityManager->flush();
             return $this->redirectToRoute("adminSchedule");
         }
 
-        $selectedMovies = array();
-
-        /* @var $movie Movie */
-        foreach ($movies as $movie) {
-            if ($movie->getShortlisted() && $movie->getScreeningDay() == null) {
-                $selectedMovies[] = $movie;
-            }
-        }
-
-        // Sort screening day movie list
+        // Sort screening day movie list and compute etag
+        $etag = "";
         /* @var $screeningDay ScreeningDay */
         foreach ($screeningDays as $screeningDay) {
             $entityManager->detach($screeningDay);
@@ -254,6 +255,26 @@ class AdminController extends Controller
             /* @var $movie Movie */
             foreach ($movies as $movie) {
                 $screeningDay->addScreenedMovie($movie);
+                $etag .= $movie->getId();
+            }
+        }
+        $response->setEtag($etag, true);
+        $response->setPublic();
+
+        // Check that the Response is not modified for the given Request
+        if ($response->isNotModified($request)) {
+            // return the 304 Response immediately
+            return $response;
+        }
+
+        // Else finish rendering
+
+        $selectedMovies = array();
+        // Retrieve selected shorts
+        /* @var $movie Movie */
+        foreach ($movies as $movie) {
+            if ($movie->getShortlisted() && $movie->getScreeningDay() == null) {
+                $selectedMovies[] = $movie;
             }
         }
 
