@@ -15,16 +15,24 @@
         </div>#}
     </div>
 
+    <p class="text-secondary"><em>Pour modifier la programmation du festival, glisser-déposer les courts-métrages pour
+            les réorganiser. Pour réinistialliser l'ordre, recharger simplement la page</em></p>
 
     <div class="card border-success mb-4">
         <h5 class="card-header text-success">
             Courts-métrages sélectionnés
         </h5>
+
         <ul id="0" class="list-group list-group-flush sortable bg-success" style="min-height: 3em">
             {% for movie in selectedMovies %}
-                <li id="{{ movie.id }}" class="list-group-item"><span class="oi oi-elevator mr-3"></span> {{ movie.title }}
-                    - {{ movie.director.firstName }} {{ movie.director.name }} - {% for category in movie.categories %}
-                        <div class="badge badge-secondary">{{ category.name }}</div>{% endfor %}
+                <li id="{{ movie.id }}" class="list-group-item"><span class="oi oi-elevator mr-3"></span><a
+                            href="{{ path("movieDetails", {"movieId": movie.id}) }}">{{ movie.title }}</a>
+                    <span class="mx-2">
+                    {% for category in movie.categories %}
+                        <div class="badge badge-secondary">{{ category.name }}</div>
+                    {% endfor %}
+                    </span>
+                    {{ movie.director.firstName }} {{ movie.director.name }}
                 </li>
             {% endfor %}
         </ul>
@@ -38,9 +46,14 @@
             <ul id="{{ screeningDay.id }}" class="list-group list-group-flush sortable bg-primary"
                 style="min-height: 3em">
                 {% for movie in screeningDay.screenedMovies %}
-                    <li id="{{ movie.id }}" class="list-group-item"><span class="oi oi-elevator mr-3"></span> {{ movie.title }}
-                        - {{ movie.director.firstName }} {{ movie.director.name }} - {% for category in movie.categories %}
-                            <div class="badge badge-secondary">{{ category.name }}</div>{% endfor %}
+                    <li id="{{ movie.id }}" class="list-group-item"><span class="oi oi-elevator mr-3"></span><a
+                                href="{{ path("movieDetails", {"movieId": movie.id}) }}">{{ movie.title }}</a>
+                        <span class="mx-2">
+                            {% for category in movie.categories %}
+                                <div class="badge badge-secondary">{{ category.name }}</div>
+                            {% endfor %}
+                        </span>
+                        {{ movie.director.firstName }} {{ movie.director.name }}
                     </li>
                 {% endfor %}
             </ul>

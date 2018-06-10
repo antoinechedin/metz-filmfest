@@ -18,6 +18,7 @@ list.each(function (i) {
        connectWith: '.sortable',
        revert: 100,
        tolerance: "pointer",
+       axis: "y",
        update: function( event, ui ) {
            $('input#form_day' + this.id).val($(this).sortable("toArray"));
        }

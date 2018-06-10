@@ -195,7 +195,11 @@ class AdminController extends Controller
                 "attr" => array("id" => "day" . $screeningDay->getId())
             ));
         }
-        $formBuilder->add("submit", SubmitType::class);
+        $formBuilder->add("saveChanges", SubmitType::class, array(
+            "attr" => array(
+                "class" => "btn btn-primary"
+            )
+        ));
         $form = $formBuilder->getForm();
 
         $form->handleRequest($request);
