@@ -95,6 +95,22 @@ class Movie
      */
     private $comments;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Festival", inversedBy="moviesRegistered")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $festival;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\ScreeningDay", inversedBy="screenedMovies")
+     */
+    private $screeningDay;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $screeningDayIndex;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
@@ -267,6 +283,42 @@ class Movie
                 $comment->setMovie(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getFestival(): ?Festival
+    {
+        return $this->festival;
+    }
+
+    public function setFestival(?Festival $festival): self
+    {
+        $this->festival = $festival;
+
+        return $this;
+    }
+
+    public function getScreeningDay(): ?ScreeningDay
+    {
+        return $this->screeningDay;
+    }
+
+    public function setScreeningDay(?ScreeningDay $screeningDay): self
+    {
+        $this->screeningDay = $screeningDay;
+
+        return $this;
+    }
+
+    public function getScreeningDayIndex(): ?int
+    {
+        return $this->screeningDayIndex;
+    }
+
+    public function setScreeningDayIndex(?int $screeningDayIndex): self
+    {
+        $this->screeningDayIndex = $screeningDayIndex;
 
         return $this;
     }

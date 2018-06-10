@@ -11,11 +11,16 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Entity\Movie;
+use App\Entity\ScreeningDay;
 use App\Entity\User;
 use App\Form\CommentType;
 use App\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\EventListener\AbstractSessionListener;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -31,6 +36,7 @@ class AdminController extends Controller
         $selectedMovies = array();
         $eliminatedMovies = array();
 
+        /* @var $movie Movie */
         foreach ($movies as $movie) {
             if ($movie->getShortlisted() === null) {
                 $waitingMovies[] = $movie;
@@ -171,5 +177,112 @@ class AdminController extends Controller
 
         $entityManager->flush();
         return $this->redirectToRoute("admin");
+    }
+
+    public function adminSchedule(Request $request)
+    {
+        $response = new Response();
+        $response->headers->set(AbstractSessionListener::NO_AUTO_CACHE_CONTROL_HEADER, 'true');
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $screeningDayRepository = $entityManager->getRepository(ScreeningDay::class);
+        $screeningDays = $screeningDayRepository->findAll();
+        $movieRepository = $entityManager->getRepository(Movie::class);
+        $movies = $movieRepository->findAll();
+
+        // Handle POST
+        $postData = array();
+        $formBuilder = $this->createFormBuilder($postData)
+            ->add("day0", HiddenType::class, array(
+                "attr" => array("id" => "day0")
+            ));
+        /* @var $screeningDay ScreeningDay */
+        foreach ($screeningDays as $screeningDay) {
+            $formBuilder->add("day" . $screeningDay->getId(), HiddenType::class, array(
+                "attr" => array("id" => "day" . $screeningDay->getId())
+            ));
+        }
+        $formBuilder->add("saveChanges", SubmitType::class, array(
+            "attr" => array(
+                "class" => "btn btn-primary"
+            )
+        ));
+        $form = $formBuilder->getForm();
+        $form->handleRequest($request);
+
+        // If form submitted
+        if ($form->isSubmitted() && $form->isValid()) {
+            $postData = $form->getData();
+
+            // Set all unscreened shorts
+            foreach (explode(",", $postData["day0"]) as $movieId) {
+                $movie = $movieRepository->find($movieId);
+                if ($movie != null) {
+                    $movie->setScreeningDay(null);
+                    $movie->setScreeningDayIndex(null);
+                }
+            }
+            // Remove unscreened shorts from the post data
+            array_splice($postData, 0, 1);
+
+            // Set all shorts into their screening day with the right index
+            foreach ($postData as $screeningDayIdStr => $scheduleStr) {
+                // Retrieve the screening day and clear the screened movie list
+                $screeningDay = $screeningDayRepository->find(substr($screeningDayIdStr, 3));
+                $screeningDay->clearScreenedMovies();
+                // Iterate over the retrieved string to set screening day and index
+                foreach (explode(",", $scheduleStr) as $index => $movieId) {
+                    $movie = $movieRepository->find($movieId);
+                    if ($movie != null) {
+                        $movie->setScreeningDay($screeningDay);
+                        $movie->setScreeningDayIndex($index);
+                    }
+                }
+            }
+
+            // Flush changes
+            $entityManager->flush();
+            return $this->redirectToRoute("adminSchedule");
+        }
+
+        // Sort screening day movie list and compute etag
+        $etag = "";
+        /* @var $screeningDay ScreeningDay */
+        foreach ($screeningDays as $screeningDay) {
+            $entityManager->detach($screeningDay);
+            $screeningDay->clearScreenedMovies();
+            $movies = $movieRepository->findBy(array("screeningDay" => $screeningDay->getId()), array("screeningDayIndex" => "ASC"));
+            /* @var $movie Movie */
+            foreach ($movies as $movie) {
+                $screeningDay->addScreenedMovie($movie);
+                $etag .= $movie->getId();
+            }
+        }
+        $response->setEtag($etag, true);
+        $response->setPublic();
+
+        // Check that the Response is not modified for the given Request
+        if ($response->isNotModified($request)) {
+            // return the 304 Response immediately
+            return $response;
+        }
+
+        // Else finish rendering
+
+        $selectedMovies = array();
+        // Retrieve selected shorts
+        /* @var $movie Movie */
+        foreach ($movies as $movie) {
+            if ($movie->getShortlisted() && $movie->getScreeningDay() == null) {
+                $selectedMovies[] = $movie;
+            }
+        }
+
+        return $this->render("admin/adminSchedule.html.twig", array(
+            "user" => $this->getUser(),
+            "form" => $form->createView(),
+            "selectedMovies" => $selectedMovies,
+            "screeningDays" => $screeningDays
+        ));
     }
 }

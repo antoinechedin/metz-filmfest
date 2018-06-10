@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Festival;
 use App\Entity\Movie;
 use App\Form\MovieType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -17,10 +18,13 @@ class InscriptionController extends Controller
      */
     public function index(Request $request)
     {
+        $entityManager = $this->getDoctrine()->getManager();
+
         $movie = new Movie();
+        // TODO: handle the current festival instead of 1
+        $movie->setFestival($entityManager->getRepository(Festival::class)->find(1));
 
         $form = $this->createForm(MovieType::class, $movie);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -31,7 +35,6 @@ class InscriptionController extends Controller
                 $movie->setActor(null);
             }
 
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($movie);
             $entityManager->flush();
 
