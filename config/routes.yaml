@@ -52,3 +52,7 @@ shortlistMovie:
   requirements:
       movieId: '\d+'
       value: 'true|false|null'
+
+adminSchedule:
+  path: /admin/programmation
+  controller: App\Controller\AdminController::adminSchedule

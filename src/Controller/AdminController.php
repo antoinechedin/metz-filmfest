@@ -11,10 +11,13 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Entity\Movie;
+use App\Entity\ScreeningDay;
 use App\Entity\User;
 use App\Form\CommentType;
 use App\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -171,5 +174,90 @@ class AdminController extends Controller
 
         $entityManager->flush();
         return $this->redirectToRoute("admin");
+    }
+
+    public function adminSchedule(Request $request)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $movieRepository = $entityManager->getRepository(Movie::class);
+        $screeningDayRepository = $entityManager->getRepository(ScreeningDay::class);
+        $movies = $movieRepository->findAll();
+        $screeningDays = $screeningDayRepository->findAll();
+
+        $postData = array();
+        $formBuilder = $this->createFormBuilder($postData)
+            ->add("day0", HiddenType::class, array(
+                "attr" => array("id" => "day0")
+            ));
+        /* @var $screeningDay ScreeningDay */
+        foreach ($screeningDays as $screeningDay) {
+            $formBuilder->add("day" . $screeningDay->getId(), HiddenType::class, array(
+                "attr" => array("id" => "day" . $screeningDay->getId())
+            ));
+        }
+        $formBuilder->add("submit", SubmitType::class);
+        $form = $formBuilder->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $postData = $form->getData();
+
+            // Set the screeningDay to null
+            foreach (explode(",", $postData["day0"]) as $movieId) {
+                $movie = $movieRepository->find($movieId);
+                if ($movie != null) {
+                    $movie->setScreeningDay(null);
+                    $movie->setScreeningDayIndex(null);
+                }
+            }
+
+            // Remove unscreened movies from the post data
+            array_splice($postData, 0, 1);
+            foreach ($postData as $screeningDayIdStr => $scheduleStr) {
+                // Retrieve the screening day and clear the screened movie list
+                $screeningDay = $screeningDayRepository->find(substr($screeningDayIdStr, 3));
+                $screeningDay->clearScreenedMovies();
+                // For each movie set in the screening day and the screening day index
+                foreach (explode(",", $scheduleStr) as $index => $movieId) {
+                    $movie = $movieRepository->find($movieId);
+                    if ($movie != null) {
+                        $movie->setScreeningDay($screeningDay);
+                        $movie->setScreeningDayIndex($index);
+                    }
+                }
+            }
+
+            $entityManager->flush();
+            return $this->redirectToRoute("adminSchedule");
+        }
+
+        $selectedMovies = array();
+
+        /* @var $movie Movie */
+        foreach ($movies as $movie) {
+            if ($movie->getShortlisted() && $movie->getScreeningDay() == null) {
+                $selectedMovies[] = $movie;
+            }
+        }
+
+        // Sort screening day movie list
+        /* @var $screeningDay ScreeningDay */
+        foreach ($screeningDays as $screeningDay) {
+            $entityManager->detach($screeningDay);
+            $screeningDay->clearScreenedMovies();
+            $movies = $movieRepository->findBy(array("screeningDay" => $screeningDay->getId()), array("screeningDayIndex" => "ASC"));
+            /* @var $movie Movie */
+            foreach ($movies as $movie) {
+                $screeningDay->addScreenedMovie($movie);
+            }
+        }
+
+        return $this->render("admin/adminSchedule.html.twig", array(
+            "user" => $this->getUser(),
+            "form" => $form->createView(),
+            "selectedMovies" => $selectedMovies,
+            "screeningDays" => $screeningDays
+        ));
     }
 }

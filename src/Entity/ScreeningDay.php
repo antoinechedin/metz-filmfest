@@ -76,6 +76,12 @@ class ScreeningDay
         return $this->screenedMovies;
     }
 
+    public function setScreenedMovies($screenedMovies): void
+    {
+        $this->screenedMovies = $screenedMovies;
+    }
+
+
     public function addScreenedMovie(Movie $screenedMovie): self
     {
         if (!$this->screenedMovies->contains($screenedMovie)) {
@@ -96,6 +102,12 @@ class ScreeningDay
             }
         }
 
+        return $this;
+    }
+
+    public function clearScreenedMovies(): self
+    {
+        $this->screenedMovies->clear();
         return $this;
     }
 }
