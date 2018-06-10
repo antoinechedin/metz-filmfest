@@ -1,6 +1,7 @@
 const $ = require('jquery');
 import "bootstrap";
 import "./jquery-ui";
+import "./jquery-ui-touch-punch"
 
 // Enable bootstrap pop over
 $(function () {
