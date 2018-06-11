@@ -57,9 +57,21 @@ class AdminController extends Controller
 
     public function login(Request $request, AuthenticationUtils $authenticationUtils)
     {
+        $response = new Response();
+        $response->headers->set(AbstractSessionListener::NO_AUTO_CACHE_CONTROL_HEADER, 'true');
+        // Set ETag
+        $eTag = $this->getParameter("version");
+        $response->setEtag($eTag, true);
+        $response->setPublic();
+
+        // Check that the Response is not modified for the given Request
+        if ($response->isNotModified($request)) {
+            // return the 304 Response immediately
+            return $response;
+        }
+
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
-
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
