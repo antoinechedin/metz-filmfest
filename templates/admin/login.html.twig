@@ -13,6 +13,7 @@
            value="{{ last_username }}" required autofocus>
     <label for="password" class="sr-only">Mot de passe</label>
     <input type="password" id="password" name="_password" class="form-control {% if error %}is-invalid{% endif %}" placeholder="Mot de passe" required>
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
     <input type="hidden" name="{{ path("login") }}" value="/account"/>
     {#<div class="checkbox mb-3">
         <label>
@@ -27,16 +28,4 @@
     <button class="btn btn-lg btn-green btn-block mt-3" type="submit">Connexion</button>
     <p class="mt-5 mb-3 text-muted">&copy; Ellipse {{ "now"|date("Y") }}</p>
 </form>
-{#
-<form action="{{ path('login') }}" method="post">
-    <label for="username">Email:</label>
-    <input type="text" id="username" name="_username" value="{{ last_username }}"/>
-
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="_password"/>
-    <input type="hidden" name="{{ path("login") }}" value="/account"/>
-
-
-    <button type="submit">login</button>
-</form>#}
 {% endblock %}
