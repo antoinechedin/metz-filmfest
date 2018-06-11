@@ -1,0 +1,42 @@
+{% extends "app.html.twig" %}
+
+{% block stylesheet %}<link href="{{ asset("build/css/login.css") }}" rel="stylesheet">{% endblock %}
+
+{% block body %}
+
+<form action="{{ path("login") }}" method="post" class="form-signin text-center">
+    {#<img class="mb-4" src="{{ asset("img/ellipse_logo.png") }}" alt="" width="72">#}
+    <h1 class="mb-3 text-title text-green">Administration</h1>
+
+    <label for="username" class="sr-only">Adresse email</label>
+    <input type="email" id="username" name="_username" class="form-control" placeholder="Adresse email"
+           value="{{ last_username }}" required autofocus>
+    <label for="password" class="sr-only">Mot de passe</label>
+    <input type="password" id="password" name="_password" class="form-control {% if error %}is-invalid{% endif %}" placeholder="Mot de passe" required>
+    <input type="hidden" name="{{ path("login") }}" value="/account"/>
+    {#<div class="checkbox mb-3">
+        <label>
+            <input type="checkbox" value="remember-me"> Remember me
+        </label>
+    </div>#}
+    {% if error %}
+        <div class="invalid-feedback">
+            {{ error.messageKey|trans(error.messageData, 'security') }}
+        </div>
+    {% endif %}
+    <button class="btn btn-lg btn-green btn-block mt-3" type="submit">Connexion</button>
+    <p class="mt-5 mb-3 text-muted">&copy; Ellipse {{ "now"|date("Y") }}</p>
+</form>
+{#
+<form action="{{ path('login') }}" method="post">
+    <label for="username">Email:</label>
+    <input type="text" id="username" name="_username" value="{{ last_username }}"/>
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="_password"/>
+    <input type="hidden" name="{{ path("login") }}" value="/account"/>
+
+
+    <button type="submit">login</button>
+</form>#}
+{% endblock %}
