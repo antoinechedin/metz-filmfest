@@ -9,6 +9,7 @@
 namespace App\Controller;
 
 
+use App\Controller\Exception\WrongCSRFTokenNameException;
 use App\Entity\Comment;
 use App\Entity\Movie;
 use App\Entity\ScreeningDay;
@@ -57,13 +58,25 @@ class AdminController extends Controller
 
     public function login(Request $request, AuthenticationUtils $authenticationUtils)
     {
+        $response = new Response();
+        $response->headers->set(AbstractSessionListener::NO_AUTO_CACHE_CONTROL_HEADER, 'true');
+        // Set ETag
+        $eTag = $this->getParameter("version");
+        $response->setEtag($eTag, true);
+        $response->setPublic();
+
+        // Check that the Response is not modified for the given Request
+        if ($response->isNotModified($request)) {
+            // return the 304 Response immediately
+            return $response;
+        }
+
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
-
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render("login.html.twig", array(
+        return $this->render("admin/login.html.twig", array(
             "last_username" => $lastUsername,
             "error" => $error,
         ));
@@ -283,6 +296,15 @@ class AdminController extends Controller
             "form" => $form->createView(),
             "selectedMovies" => $selectedMovies,
             "screeningDays" => $screeningDays
+        ));
+    }
+
+    public function generateCSRFToken($tokenName){
+        if (!is_string($tokenName)){
+            throw new WrongCSRFTokenNameException();
+        }
+        return $this->render('admin/security/csrfTokenField.html.twig', array(
+            "tokenName" => $tokenName
         ));
     }
 }
