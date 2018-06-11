@@ -9,6 +9,7 @@
 namespace App\Controller;
 
 
+use App\Controller\Exception\WrongCSRFTokenNameException;
 use App\Entity\Comment;
 use App\Entity\Movie;
 use App\Entity\ScreeningDay;
@@ -295,6 +296,15 @@ class AdminController extends Controller
             "form" => $form->createView(),
             "selectedMovies" => $selectedMovies,
             "screeningDays" => $screeningDays
+        ));
+    }
+
+    public function generateCSRFToken($tokenName){
+        if (!is_string($tokenName)){
+            throw new WrongCSRFTokenNameException();
+        }
+        return $this->render('admin/security/csrfTokenField.html.twig', array(
+            "tokenName" => $tokenName
         ));
     }
 }
