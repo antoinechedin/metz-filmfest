@@ -61,8 +61,14 @@
 
     {% endfor %}
     {{ form_start(form) }}
-    {{ form_widget(form) }}
-    {{ form_end(form) }}
+    {% for widget in form %}
+        {% if widget.vars.name != "_token" %}
+            {{ form_widget(widget) }}
+        {% else %}
+            {{ render_esi(controller("App\\Controller\\AdminController::renderCSRFToken", { "tokenValue": widget.vars.value })) }}
+        {% endif %}
+    {% endfor %}
+    {{ form_end(form, {'render_rest': false}) }}
 {% endblock %}
 {% block script %}
 {% endblock %}

@@ -306,13 +306,28 @@ class AdminController extends Controller
         ));
     }
 
+    /*
+     * This function generate a CSRF Token and render a hidden field with the token inside.
+     * Use this on form that aren't handle by Symfony form to protect them against CSRF attack.
+     * Don't forget to use $this->isCsrfTokenValid('token_name', $submittedToken) to check if the token submitted is the right one
+     */
     public function generateCSRFToken($tokenName)
     {
         if (!is_string($tokenName)) {
             throw new WrongCSRFTokenNameException();
         }
-        return $this->render('admin/security/csrfTokenField.html.twig', array(
+        return $this->render('admin/security/generateCSRFTokenField.html.twig', array(
             "tokenName" => $tokenName
+        ));
+    }
+
+    /*
+     * This function simply render a hidden token field form form. Use this instead of generateCSRFToken() if the form is completely handle by Symfony.
+     */
+    public function renderCSRFToken($tokenValue)
+    {
+        return $this->render('admin/security/renderCSRFTokenField.html.twig', array(
+            "tokenValue" => $tokenValue
         ));
     }
 }
