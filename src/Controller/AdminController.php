@@ -199,12 +199,13 @@ class AdminController extends Controller
 
         $entityManager = $this->getDoctrine()->getManager();
         $screeningDayRepository = $entityManager->getRepository(ScreeningDay::class);
-        $screeningDays = $screeningDayRepository->findAll();
         $movieRepository = $entityManager->getRepository(Movie::class);
-        $movies = $movieRepository->findAll();
 
         // Handle POST
+
+        // Create form
         $postData = array();
+        $screeningDays = $screeningDayRepository->findBy(array(), array("date" => "ASC")); // Retrieve screening days in the right order
         $formBuilder = $this->createFormBuilder($postData)
             ->add("day0", HiddenType::class, array(
                 "attr" => array("id" => "day0")
@@ -252,26 +253,32 @@ class AdminController extends Controller
                     }
                 }
             }
-
             // Flush changes
             $entityManager->flush();
             return $this->redirectToRoute("adminSchedule");
         }
 
-        // Sort screening day movie list and compute etag
-        $etag = "";
+        // Sort screening day movie list and compute eTag
+        $eTag = "";
         /* @var $screeningDay ScreeningDay */
         foreach ($screeningDays as $screeningDay) {
             $entityManager->detach($screeningDay);
             $screeningDay->clearScreenedMovies();
-            $movies = $movieRepository->findBy(array("screeningDay" => $screeningDay->getId()), array("screeningDayIndex" => "ASC"));
-            /* @var $movie Movie */
-            foreach ($movies as $movie) {
-                $screeningDay->addScreenedMovie($movie);
-                $etag .= $movie->getId();
+            $sortedMovies = $movieRepository->findBy(array("screeningDay" => $screeningDay->getId()), array("screeningDayIndex" => "ASC"));
+            // If there's no screenedMovie this day, add 0
+            if ($sortedMovies == null) {
+                $eTag .= "0";
+            } else { // Else just concat movie ids
+                /* @var $movie Movie */
+                foreach ($sortedMovies as $movie) {
+                    $entityManager->detach($movie);
+                    $screeningDay->addScreenedMovie($movie);
+                    $eTag .= $movie->getId();
+                }
             }
         }
-        $response->setEtag($etag, true);
+        $eTag .= "_" . $this->getParameter("version"); // Concat website version to eTag
+        $response->setEtag($eTag, true);
         $response->setPublic();
 
         // Check that the Response is not modified for the given Request
@@ -282,14 +289,10 @@ class AdminController extends Controller
 
         // Else finish rendering
 
-        $selectedMovies = array();
-        // Retrieve selected shorts
-        /* @var $movie Movie */
-        foreach ($movies as $movie) {
-            if ($movie->getShortlisted() && $movie->getScreeningDay() == null) {
-                $selectedMovies[] = $movie;
-            }
-        }
+        $selectedMovies = $movieRepository->findBy(array(
+            "shortlisted" => true,
+            "screeningDay" => null
+        ));
 
         return $this->render("admin/adminSchedule.html.twig", array(
             "user" => $this->getUser(),
