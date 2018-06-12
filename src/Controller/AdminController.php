@@ -199,20 +199,21 @@ class AdminController extends Controller
 
         $entityManager = $this->getDoctrine()->getManager();
         $screeningDayRepository = $entityManager->getRepository(ScreeningDay::class);
-        $screeningDays = $screeningDayRepository->findAll();
         $movieRepository = $entityManager->getRepository(Movie::class);
-        $movies = $movieRepository->findAll();
 
         // Handle POST
+
+        // Create form
         $postData = array();
+        $screeningDays = $screeningDayRepository->findBy(array(), array("date" => "ASC")); // Retrieve screening days in the right order
         $formBuilder = $this->createFormBuilder($postData)
-            ->add("day0", HiddenType::class, array(
-                "attr" => array("id" => "day0")
+            ->add("day_0", HiddenType::class, array(
+                "attr" => array("id" => "day_0")
             ));
         /* @var $screeningDay ScreeningDay */
         foreach ($screeningDays as $screeningDay) {
-            $formBuilder->add("day" . $screeningDay->getId(), HiddenType::class, array(
-                "attr" => array("id" => "day" . $screeningDay->getId())
+            $formBuilder->add("day_" . $screeningDay->getId(), HiddenType::class, array(
+                "attr" => array("id" => "day_" . $screeningDay->getId())
             ));
         }
         $formBuilder->add("saveChanges", SubmitType::class, array(
@@ -228,7 +229,9 @@ class AdminController extends Controller
             $postData = $form->getData();
 
             // Set all unscreened shorts
-            foreach (explode(",", $postData["day0"]) as $movieId) {
+            foreach (explode(",", $postData["day_0"]) as $movieIdStr) {
+                // Remove the "item_" in the id
+                $movieId = substr($movieIdStr, 5);
                 $movie = $movieRepository->find($movieId);
                 if ($movie != null) {
                     $movie->setScreeningDay(null);
@@ -240,11 +243,13 @@ class AdminController extends Controller
 
             // Set all shorts into their screening day with the right index
             foreach ($postData as $screeningDayIdStr => $scheduleStr) {
-                // Retrieve the screening day and clear the screened movie list
-                $screeningDay = $screeningDayRepository->find(substr($screeningDayIdStr, 3));
+                // Retrieve the screening day and clear the screened movie list, the substr() is use to get rid of the "day_" in the screeningDayIdStr
+                $screeningDay = $screeningDayRepository->find(substr($screeningDayIdStr, 4));
                 $screeningDay->clearScreenedMovies();
                 // Iterate over the retrieved string to set screening day and index
-                foreach (explode(",", $scheduleStr) as $index => $movieId) {
+                foreach (explode(",", $scheduleStr) as $index => $movieIdStr) {
+                    // Remove the "item_" in the id
+                    $movieId = substr($movieIdStr, 5);
                     $movie = $movieRepository->find($movieId);
                     if ($movie != null) {
                         $movie->setScreeningDay($screeningDay);
@@ -252,26 +257,32 @@ class AdminController extends Controller
                     }
                 }
             }
-
             // Flush changes
             $entityManager->flush();
             return $this->redirectToRoute("adminSchedule");
         }
 
-        // Sort screening day movie list and compute etag
-        $etag = "";
+        // Sort screening day movie list and compute eTag
+        $eTag = "";
         /* @var $screeningDay ScreeningDay */
         foreach ($screeningDays as $screeningDay) {
             $entityManager->detach($screeningDay);
             $screeningDay->clearScreenedMovies();
-            $movies = $movieRepository->findBy(array("screeningDay" => $screeningDay->getId()), array("screeningDayIndex" => "ASC"));
-            /* @var $movie Movie */
-            foreach ($movies as $movie) {
-                $screeningDay->addScreenedMovie($movie);
-                $etag .= $movie->getId();
+            $sortedMovies = $movieRepository->findBy(array("screeningDay" => $screeningDay->getId()), array("screeningDayIndex" => "ASC"));
+            // If there's no screenedMovie this day, add 0
+            if ($sortedMovies == null) {
+                $eTag .= "0";
+            } else { // Else just concat movie ids
+                /* @var $movie Movie */
+                foreach ($sortedMovies as $movie) {
+                    $entityManager->detach($movie);
+                    $screeningDay->addScreenedMovie($movie);
+                    $eTag .= $movie->getId();
+                }
             }
         }
-        $response->setEtag($etag, true);
+        $eTag .= "_" . $this->getParameter("version"); // Concat website version to eTag
+        $response->setEtag($eTag, true);
         $response->setPublic();
 
         // Check that the Response is not modified for the given Request
@@ -282,14 +293,10 @@ class AdminController extends Controller
 
         // Else finish rendering
 
-        $selectedMovies = array();
-        // Retrieve selected shorts
-        /* @var $movie Movie */
-        foreach ($movies as $movie) {
-            if ($movie->getShortlisted() && $movie->getScreeningDay() == null) {
-                $selectedMovies[] = $movie;
-            }
-        }
+        $selectedMovies = $movieRepository->findBy(array(
+            "shortlisted" => true,
+            "screeningDay" => null
+        ));
 
         return $this->render("admin/adminSchedule.html.twig", array(
             "user" => $this->getUser(),
@@ -299,12 +306,28 @@ class AdminController extends Controller
         ));
     }
 
-    public function generateCSRFToken($tokenName){
-        if (!is_string($tokenName)){
+    /*
+     * This function generate a CSRF Token and render a hidden field with the token inside.
+     * Use this on form that aren't handle by Symfony form to protect them against CSRF attack.
+     * Don't forget to use $this->isCsrfTokenValid('token_name', $submittedToken) to check if the token submitted is the right one
+     */
+    public function generateCSRFToken($tokenName)
+    {
+        if (!is_string($tokenName)) {
             throw new WrongCSRFTokenNameException();
         }
-        return $this->render('admin/security/csrfTokenField.html.twig', array(
+        return $this->render('admin/security/generateCSRFTokenField.html.twig', array(
             "tokenName" => $tokenName
+        ));
+    }
+
+    /*
+     * This function simply render a hidden token field form form. Use this instead of generateCSRFToken() if the form is completely handle by Symfony.
+     */
+    public function renderCSRFToken($tokenValue)
+    {
+        return $this->render('admin/security/renderCSRFTokenField.html.twig', array(
+            "tokenValue" => $tokenValue
         ));
     }
 }

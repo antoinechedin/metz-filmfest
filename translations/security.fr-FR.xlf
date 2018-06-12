@@ -6,6 +6,10 @@
                 <source>Invalid credentials.</source>
                 <target>Adresse email ou mot de passe incorrect.</target>
             </trans-unit>
+            <trans-unit id="systemProblem">
+                <source>Authentication request could not be processed due to a system problem.</source>
+                <target>Le serveur rencontre actuellement des problèmes internes, il est impossible de se connecter pour le moment</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

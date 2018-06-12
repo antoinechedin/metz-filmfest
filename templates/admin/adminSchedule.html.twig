@@ -23,9 +23,9 @@
             Courts-métrages sélectionnés
         </h5>
 
-        <ul id="0" class="list-group list-group-flush sortable bg-success" style="min-height: 3em">
+        <ul id="sortable_0" class="list-group list-group-flush sortable bg-light" style="min-height: 3em">
             {% for movie in selectedMovies %}
-                <li id="{{ movie.id }}" class="list-group-item"><span class="oi oi-elevator mr-3"></span><a
+                <li id="item_{{ movie.id }}" class="list-group-item"><span class="oi oi-elevator mr-3"></span><a
                             href="{{ path("movieDetails", {"movieId": movie.id}) }}">{{ movie.title }}</a>
                     <span class="mx-2">
                     {% for category in movie.categories %}
@@ -43,10 +43,10 @@
             <h5 class="card-header text-primary">
                 {{ screeningDay.date|date("l d F Y") }}
             </h5>
-            <ul id="{{ screeningDay.id }}" class="list-group list-group-flush sortable bg-primary"
+            <ul id="sortable_{{ screeningDay.id }}" class="list-group list-group-flush sortable bg-light"
                 style="min-height: 3em">
                 {% for movie in screeningDay.screenedMovies %}
-                    <li id="{{ movie.id }}" class="list-group-item"><span class="oi oi-elevator mr-3"></span><a
+                    <li id="item_{{ movie.id }}" class="list-group-item"><span class="oi oi-elevator mr-3"></span><a
                                 href="{{ path("movieDetails", {"movieId": movie.id}) }}">{{ movie.title }}</a>
                         <span class="mx-2">
                             {% for category in movie.categories %}
@@ -61,8 +61,14 @@
 
     {% endfor %}
     {{ form_start(form) }}
-    {{ form_widget(form) }}
-    {{ form_end(form) }}
+    {% for widget in form %}
+        {% if widget.vars.name != "_token" %}
+            {{ form_widget(widget) }}
+        {% else %}
+            {{ render_esi(controller("App\\Controller\\AdminController::renderCSRFToken", { "tokenValue": widget.vars.value })) }}
+        {% endif %}
+    {% endfor %}
+    {{ form_end(form, {'render_rest': false}) }}
 {% endblock %}
 {% block script %}
 {% endblock %}
