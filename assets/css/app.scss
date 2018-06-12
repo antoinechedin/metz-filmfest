@@ -56,6 +56,10 @@ main {
   height: 10vh;
 }
 
+.list-group-item-placeholder {
+  height: 3em;
+  background-color: $info;
+}
 
 @import url('https://fonts.googleapis.com/css?family=Lobster|Roboto+Slab');
 

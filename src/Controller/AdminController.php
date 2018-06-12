@@ -207,13 +207,13 @@ class AdminController extends Controller
         $postData = array();
         $screeningDays = $screeningDayRepository->findBy(array(), array("date" => "ASC")); // Retrieve screening days in the right order
         $formBuilder = $this->createFormBuilder($postData)
-            ->add("day0", HiddenType::class, array(
-                "attr" => array("id" => "day0")
+            ->add("day_0", HiddenType::class, array(
+                "attr" => array("id" => "day_0")
             ));
         /* @var $screeningDay ScreeningDay */
         foreach ($screeningDays as $screeningDay) {
-            $formBuilder->add("day" . $screeningDay->getId(), HiddenType::class, array(
-                "attr" => array("id" => "day" . $screeningDay->getId())
+            $formBuilder->add("day_" . $screeningDay->getId(), HiddenType::class, array(
+                "attr" => array("id" => "day_" . $screeningDay->getId())
             ));
         }
         $formBuilder->add("saveChanges", SubmitType::class, array(
@@ -229,7 +229,9 @@ class AdminController extends Controller
             $postData = $form->getData();
 
             // Set all unscreened shorts
-            foreach (explode(",", $postData["day0"]) as $movieId) {
+            foreach (explode(",", $postData["day_0"]) as $movieIdStr) {
+                // Remove the "item_" in the id
+                $movieId = substr($movieIdStr, 5);
                 $movie = $movieRepository->find($movieId);
                 if ($movie != null) {
                     $movie->setScreeningDay(null);
@@ -241,11 +243,13 @@ class AdminController extends Controller
 
             // Set all shorts into their screening day with the right index
             foreach ($postData as $screeningDayIdStr => $scheduleStr) {
-                // Retrieve the screening day and clear the screened movie list
-                $screeningDay = $screeningDayRepository->find(substr($screeningDayIdStr, 3));
+                // Retrieve the screening day and clear the screened movie list, the substr() is use to get rid of the "day_" in the screeningDayIdStr
+                $screeningDay = $screeningDayRepository->find(substr($screeningDayIdStr, 4));
                 $screeningDay->clearScreenedMovies();
                 // Iterate over the retrieved string to set screening day and index
-                foreach (explode(",", $scheduleStr) as $index => $movieId) {
+                foreach (explode(",", $scheduleStr) as $index => $movieIdStr) {
+                    // Remove the "item_" in the id
+                    $movieId = substr($movieIdStr, 5);
                     $movie = $movieRepository->find($movieId);
                     if ($movie != null) {
                         $movie->setScreeningDay($screeningDay);
@@ -302,8 +306,9 @@ class AdminController extends Controller
         ));
     }
 
-    public function generateCSRFToken($tokenName){
-        if (!is_string($tokenName)){
+    public function generateCSRFToken($tokenName)
+    {
+        if (!is_string($tokenName)) {
             throw new WrongCSRFTokenNameException();
         }
         return $this->render('admin/security/csrfTokenField.html.twig', array(

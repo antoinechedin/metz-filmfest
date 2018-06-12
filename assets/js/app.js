@@ -13,15 +13,17 @@ $('#flashMessageModal').modal('show');
 // Jquery UI
 let list = $('.sortable');
 
-list.each(function (i) {
-   $(this).sortable({
-       connectWith: '.sortable',
-       revert: 100,
-       tolerance: "pointer",
-       axis: "y",
-       update: function( event, ui ) {
-           $('input#form_day' + this.id).val($(this).sortable("toArray"));
-       }
-   });
-    $('input#form_day' + this.id).val($(this).sortable("toArray"));
+list.each(function (i, el) {
+    $(this).sortable({
+        connectWith: '.sortable',
+        revert: 100,
+        axis: "y",
+        placeholder: "list-group-item list-group-item-placeholder",
+        update: function (event, ui) {
+            // The substring is use to get rid of the "sortable_" in the id
+            $('input#form_day_' + el.id.substr(9)).val($(this).sortable("toArray"));
+        }
+    });
+    // The substring is use to get rid of the "sortable_" in the id
+    $('input#form_day_' + el.id.substr(9)).val($(this).sortable("toArray"));
 });
