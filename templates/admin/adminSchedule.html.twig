@@ -1,0 +1,74 @@
+{% extends "admin/adminLayout.html.twig" %}
+
+{% block main %}
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Gestion de la programmation</h1>
+        {#<div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group mr-2">
+                <button class="btn btn-sm btn-outline-secondary">Share</button>
+                <button class="btn btn-sm btn-outline-secondary">Export</button>
+            </div>
+            <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
+                <span data-feather="calendar"></span>
+                This week
+            </button>
+        </div>#}
+    </div>
+
+    <p class="text-secondary"><em>Pour modifier la programmation du festival, glisser-déposer les courts-métrages pour
+            les réorganiser. Pour réinistialliser l'ordre, recharger simplement la page</em></p>
+
+    <div class="card border-success mb-4">
+        <h5 class="card-header text-success">
+            Courts-métrages sélectionnés
+        </h5>
+
+        <ul id="sortable_0" class="list-group list-group-flush sortable bg-light" style="min-height: 3em">
+            {% for movie in selectedMovies %}
+                <li id="item_{{ movie.id }}" class="list-group-item"><span class="oi oi-elevator mr-3"></span><a
+                            href="{{ path("movieDetails", {"movieId": movie.id}) }}">{{ movie.title }}</a>
+                    <span class="mx-2">
+                    {% for category in movie.categories %}
+                        <div class="badge badge-secondary">{{ category.name }}</div>
+                    {% endfor %}
+                    </span>
+                    {{ movie.director.firstName }} {{ movie.director.name }}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    {% for screeningDay in screeningDays %}
+        <div class="card border-primary mb-4">
+            <h5 class="card-header text-primary">
+                {{ screeningDay.date|date("l d F Y") }}
+            </h5>
+            <ul id="sortable_{{ screeningDay.id }}" class="list-group list-group-flush sortable bg-light"
+                style="min-height: 3em">
+                {% for movie in screeningDay.screenedMovies %}
+                    <li id="item_{{ movie.id }}" class="list-group-item"><span class="oi oi-elevator mr-3"></span><a
+                                href="{{ path("movieDetails", {"movieId": movie.id}) }}">{{ movie.title }}</a>
+                        <span class="mx-2">
+                            {% for category in movie.categories %}
+                                <div class="badge badge-secondary">{{ category.name }}</div>
+                            {% endfor %}
+                        </span>
+                        {{ movie.director.firstName }} {{ movie.director.name }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+    {% endfor %}
+    {{ form_start(form) }}
+    {% for widget in form %}
+        {% if widget.vars.name != "_token" %}
+            {{ form_widget(widget) }}
+        {% else %}
+            {{ render_esi(controller("App\\Controller\\AdminController::renderCSRFToken", { "tokenValue": widget.vars.value })) }}
+        {% endif %}
+    {% endfor %}
+    {{ form_end(form, {'render_rest': false}) }}
+{% endblock %}
+{% block script %}
+{% endblock %}

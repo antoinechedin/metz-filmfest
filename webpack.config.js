@@ -13,6 +13,7 @@ Encore
     // uncomment to define the assets of the project
     .addEntry('js/app', './assets/js/app.js')
     .addStyleEntry('css/app', './assets/css/app.scss')
+    .addStyleEntry('css/login', './assets/css/login.scss')
     .addStyleEntry('css/oi', './assets/css/open-iconic-bootstrap.scss')
     .addStyleEntry('css/admin', './assets/css/admin.scss')
 

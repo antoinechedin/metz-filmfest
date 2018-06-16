@@ -52,10 +52,25 @@ main {
   background-size: contain;
 }
 
+.schedule-poster {
+  background: url("../img/schedule_poster.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.schedule-poster > h1 {
+  text-shadow: black 0px 5px 15px;
+}
+
 .homepage-poster-spacer {
   height: 10vh;
 }
 
+.list-group-item-placeholder {
+  height: 3em;
+  background-color: $info;
+}
 
 @import url('https://fonts.googleapis.com/css?family=Lobster|Roboto+Slab');
 

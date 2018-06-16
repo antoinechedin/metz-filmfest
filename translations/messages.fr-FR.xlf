@@ -94,6 +94,10 @@
                 <source>Submit</source>
                 <target>Envoyer</target>
             </trans-unit>
+            <trans-unit id="svaeChanges">
+                <source>Save changes</source>
+                <target>Sauvegarder les modifications</target>
+            </trans-unit>
             <trans-unit id="message">
                 <source>Message</source>
                 <target>Message</target>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file datatype="plaintext" original="file.ext" source-language="en" target-language="fr-FR">
+        <body>
+            <trans-unit id="invalidCredentials">
+                <source>Invalid credentials.</source>
+                <target>Adresse email ou mot de passe incorrect.</target>
+            </trans-unit>
+            <trans-unit id="systemProblem">
+                <source>Authentication request could not be processed due to a system problem.</source>
+                <target>Le serveur rencontre actuellement des problèmes internes, il est impossible de se connecter pour le moment</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

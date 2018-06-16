@@ -20,6 +20,9 @@ security:
             form_login:
                  login_path: login
                  check_path: login
+                 default_target_path: admin
+                 always_use_default_target_path: true
+                 csrf_token_generator: security.csrf.token_manager
             provider: db_provider
             logout:
                  path:   /logout

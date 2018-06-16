@@ -8,6 +8,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Movie;
+use App\Entity\ScreeningDay;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
@@ -17,6 +19,33 @@ class WebsiteController extends Controller
     public function homepage()
     {
         return $this->render("website/homepage.html.twig");
+    }
+
+    public function schedule()
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $screeningDayRepository = $entityManager->getRepository(ScreeningDay::class);
+        $movieRepository = $entityManager->getRepository(Movie::class);
+        $screeningDays = $screeningDayRepository->findBy(array(), array("date" => "ASC")); // Retrieve screening days in the right order
+        // Then sort movies
+        /* @var $screeningDay ScreeningDay*/
+        foreach ($screeningDays as $screeningDay) {
+            $entityManager->detach($screeningDay);
+            $screeningDay->clearScreenedMovies();
+            $sortedMovies = $movieRepository->findBy(array("screeningDay" => $screeningDay->getId()), array("screeningDayIndex" => "ASC"));
+
+            if ($sortedMovies != null) {
+                /* @var $movie Movie */
+                foreach ($sortedMovies as $movie) {
+                    $entityManager->detach($movie);
+                    $screeningDay->addScreenedMovie($movie);
+                }
+            }
+        }
+
+        return $this->render("website/schedule.html.twig", array(
+            "screeningDays" => $screeningDays
+        ));
     }
 
     public function registrationRules()

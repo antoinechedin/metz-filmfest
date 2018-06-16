@@ -2,6 +2,10 @@ homepage:
   path: /
   controller: App\Controller\WebsiteController::homepage
 
+schedule:
+  path: /programmation
+  controller: App\Controller\WebsiteController::schedule
+
 registrationRules:
   path: /support/reglement-d-inscription
   controller: App\Controller\WebsiteController::registrationRules
@@ -52,3 +56,7 @@ shortlistMovie:
   requirements:
       movieId: '\d+'
       value: 'true|false|null'
+
+adminSchedule:
+  path: /admin/programmation
+  controller: App\Controller\AdminController::adminSchedule
