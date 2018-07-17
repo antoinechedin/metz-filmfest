@@ -75,8 +75,8 @@
   "extra": {
     "symfony": {
       "id": "01CC8KFMSVGM0AE3H40TKF6BB6",
-      "allow-contrib": false,
-      "public-dir": "www"
-    }
+      "allow-contrib": false
+    },
+    "public-dir": "www"
   }
 }
