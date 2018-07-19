@@ -111,6 +111,12 @@ class Movie
      */
     private $screeningDayIndex;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     * @Assert\Type("string")
+     */
+    private $picture;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
@@ -319,6 +325,18 @@ class Movie
     public function setScreeningDayIndex(?int $screeningDayIndex): self
     {
         $this->screeningDayIndex = $screeningDayIndex;
+
+        return $this;
+    }
+
+    public function getPicture(): ?string
+    {
+        return $this->picture;
+    }
+
+    public function setPicture(string  $picture): self
+    {
+        $this->picture = $picture;
 
         return $this;
     }
