@@ -1,8 +1,8 @@
 {% extends "admin/adminLayout.html.twig" %}
 
 {% block main %}
-    <div class="row">
-        <div class="container-fluid col-lg-6 col-xl-5 px-2">
+    <div class="row mt-4">
+        <div class="container-fluid col-lg-6 col-xl-5 mb-4">
             <div class="card shadow-sm border-0">
                 <div class="image-wrapper">
                     {% if movie.picture != null %}
@@ -75,7 +75,7 @@
                 </div>
             </div>
         </div>
-        <div class="container-fluid col-lg-6 col-xl-7 px-2">
+        <div class="container-fluid col-lg-6 col-xl-7 mb-4">
             <div class="card shadow-sm border-0">
                 <div class="card-body">
                     <h6 class="card-text border-bottom">Discussion</h6>
@@ -113,10 +113,6 @@
                     {{ form_end(commentForm) }}
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="pt-3 pb-2 mb-3">
-        <div class=" container-fluid">
         </div>
     </div>
 
