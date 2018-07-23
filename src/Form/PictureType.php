@@ -23,11 +23,13 @@ class PictureType extends AbstractType
         $builder
             ->add("picture", FileType::class, array(
                 "label" => "Choose a Picture",
+                "required" => false,
                 "constraints" =>array(
                     new Image()
                 )
             ))
-            ->add("submit", SubmitType::class);
+            ->add("save", SubmitType::class)
+            ->add("remove", SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)
