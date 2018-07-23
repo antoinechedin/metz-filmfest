@@ -1,6 +1,7 @@
 $theme-colors: (
         "green": #4b8271,
-        "yellow": #f1cb38
+        "yellow": #f1cb38,
+        "white" : #ffffff
 );
 
 @import "~bootstrap/scss/bootstrap";
@@ -60,7 +61,7 @@ main {
 }
 
 .schedule-poster > h1 {
-  text-shadow: black 0px 5px 15px;
+  text-shadow: black 0 5px 15px;
 }
 
 .homepage-poster-spacer {

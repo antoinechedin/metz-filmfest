@@ -19,11 +19,18 @@ list.each(function (i, el) {
         revert: 100,
         axis: "y",
         placeholder: "list-group-item list-group-item-placeholder",
-        update: function (event, ui) {
+        update: function () {
             // The substring is use to get rid of the "sortable_" in the id
             $('input#form_day_' + el.id.substr(9)).val($(this).sortable("toArray"));
         }
     });
     // The substring is use to get rid of the "sortable_" in the id
     $('input#form_day_' + el.id.substr(9)).val($(this).sortable("toArray"));
+});
+
+$(".custom-file-input").on("change",function(){
+    //get the file name
+    const fileName = $(this).val().replace(/C:\\fakepath\\/i, '');
+    //replace the "Choose a file" label
+    $(this).next('.custom-file-label').html(fileName);
 });
