@@ -3,6 +3,7 @@
 parameters:
     locale: 'en'
     version: '2.2.0-beta'
+    movie_picture_directory: "img/uploads/"
 
 services:
     # default configuration for services in *this* file
