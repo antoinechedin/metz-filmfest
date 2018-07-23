@@ -5,6 +5,13 @@
         </h6>
         <ul class="nav flex-column">
             <li class="nav-item">
+                <a class="nav-link{% if app.request.pathinfo == path("festivalManagement") %} active{% endif %}"
+                   href="{{ path("festivalManagement") }}">
+                    <span class="oi oi-browser" title="festival" aria-hidden="true"></span>
+                    Gestion du festival
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link{% if app.request.pathinfo == path("adminSchedule") %} active{% endif %}"
                    href="{{ path("adminSchedule") }}">
                     <span class="oi oi-calendar" title="courts-métrage" aria-hidden="true"></span>

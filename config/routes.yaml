@@ -60,3 +60,7 @@ shortlistMovie:
 adminSchedule:
   path: /admin/programmation
   controller: App\Controller\AdminController::adminSchedule
+
+festivalManagement:
+  path: /admin/gestion-du-festival
+  controller: App\Controller\AdminController::festivalManagement

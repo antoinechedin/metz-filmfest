@@ -33,6 +33,16 @@ class Festival
      */
     private $comments;
 
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $registrationStartDate;
+
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $registrationEndDate;
+
     public function __construct()
     {
         $this->moviesRegistered = new ArrayCollection();
@@ -134,6 +144,30 @@ class Festival
                 $comment->setFestival(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getRegistrationStartDate(): ?\DateTimeInterface
+    {
+        return $this->registrationStartDate;
+    }
+
+    public function setRegistrationStartDate(\DateTimeInterface $registrationStartDate): self
+    {
+        $this->registrationStartDate = $registrationStartDate;
+
+        return $this;
+    }
+
+    public function getRegistrationEndDate(): ?\DateTimeInterface
+    {
+        return $this->registrationEndDate;
+    }
+
+    public function setRegistrationEndDate(\DateTimeInterface $registrationEndDate): self
+    {
+        $this->registrationEndDate = $registrationEndDate;
 
         return $this;
     }
