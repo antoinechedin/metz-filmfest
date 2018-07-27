@@ -16,6 +16,18 @@
                     {% for movie in screeningDay.screenedMovies %}
                         <div class="col-md-6 col-lg-4 mb-4">
                             <div class="card shadow">
+                                <div class="image-wrapper">
+                                    {% if movie.picture != null %}
+                                        <img src="{{ asset(movie_picture_directory ~ movie.picture) }}" class="card-img-top">
+                                    {% else %}
+                                        <div class="card-img-top no-picture bg-secondary"></div>
+                                        <div class="image-text text-center text-white">
+                                            <h1 class="display-3 m-0"><span class="oi oi-image" title="Image" aria-hidden="true"></span>
+                                            </h1>
+                                            Pas d'image
+                                        </div>
+                                    {% endif %}
+                                </div>
                                 <div class="card-body">
                                     <h5 class="card-title">{{ movie.title }}</h5>
                                     <h6 class="card-subtitle mb-2 text-muted">{{ movie.director.firstName }} {{ movie.director.name }}

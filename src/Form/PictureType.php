@@ -8,7 +8,6 @@
 
 namespace App\Form;
 
-use App\Entity\Movie;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -24,12 +23,20 @@ class PictureType extends AbstractType
             ->add("picture", FileType::class, array(
                 "label" => "Choose a Picture",
                 "required" => false,
-                "constraints" =>array(
+                "constraints" => array(
                     new Image()
                 )
             ))
-            ->add("save", SubmitType::class)
-            ->add("remove", SubmitType::class);
+            ->add("save", SubmitType::class, array(
+                "attr" => array(
+                    "class" => "btn btn-success"
+                )
+            ))
+            ->add("removePicture", SubmitType::class, array(
+                "attr" => array(
+                    "class" => "btn btn-danger"
+                )
+            ));
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -10,8 +10,10 @@ namespace App\Controller;
 
 
 use App\Controller\Exception\WrongCSRFTokenNameException;
-use App\Entity\Comment;
+use App\Entity\Festival;
+use App\Entity\FestivalComment;
 use App\Entity\Movie;
+use App\Entity\MovieComment;
 use App\Entity\ScreeningDay;
 use App\Entity\User;
 use App\Form\CommentType;
@@ -95,9 +97,8 @@ class AdminController extends Controller
 
         $pictureForm = $this->createForm(PictureType::class);
 
-        $comment = new Comment();
+        $comment = new MovieComment();
         $commentForm = $this->createForm(CommentType::class, $comment);
-
 
         $pictureForm->handleRequest($request);
 
@@ -272,9 +273,11 @@ class AdminController extends Controller
         $screeningDayRepository = $entityManager->getRepository(ScreeningDay::class);
         $movieRepository = $entityManager->getRepository(Movie::class);
 
+
+
         // Handle POST
 
-        // Create form
+        // Schedule form
         $postData = array();
         $screeningDays = $screeningDayRepository->findBy(array(), array("date" => "ASC")); // Retrieve screening days in the right order
         $formBuilder = $this->createFormBuilder($postData)
@@ -289,15 +292,21 @@ class AdminController extends Controller
         }
         $formBuilder->add("saveChanges", SubmitType::class, array(
             "attr" => array(
-                "class" => "btn btn-primary"
+                "class" => "btn btn-success"
             )
         ));
-        $form = $formBuilder->getForm();
-        $form->handleRequest($request);
+        $scheduleForm = $formBuilder->getForm();
 
-        // If form submitted
-        if ($form->isSubmitted() && $form->isValid()) {
-            $postData = $form->getData();
+        // Comment Form
+        /** @var Festival $festival */
+        $festival = $entityManager->getRepository(Festival::class)->find(1); // TODO Change that
+        $comment = new FestivalComment();
+        $commentForm = $this->createForm(CommentType::class, $comment);
+
+        // Test schedule form
+        $scheduleForm->handleRequest($request);
+        if ($scheduleForm->isSubmitted() && $scheduleForm->isValid()) {
+            $postData = $scheduleForm->getData();
 
             // Set all unscreened shorts
             foreach (explode(",", $postData["day_0"]) as $movieIdStr) {
@@ -331,6 +340,23 @@ class AdminController extends Controller
             // Flush changes
             $entityManager->flush();
             return $this->redirectToRoute("adminSchedule");
+        }
+
+        // Test comment form
+        $commentForm->handleRequest($request);
+        if ($commentForm->isSubmitted() && $commentForm->isValid()) {
+            /** @var FestivalComment $comment */
+            $comment = $commentForm->getData();
+            // Set movie and user
+            $comment->setFestival($festival);
+            $comment->setUser($this->getUser());
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($comment);
+            $entityManager->flush();
+
+            //Reload the page to clear form and prevent multiple send by refreshing the page
+            return $this->redirect($request->getUri());
         }
 
         // Sort screening day movie list and compute eTag
@@ -368,10 +394,11 @@ class AdminController extends Controller
             "shortlisted" => true,
             "screeningDay" => null
         ));
-
         return $this->render("admin/adminSchedule.html.twig", array(
             "user" => $this->getUser(),
-            "form" => $form->createView(),
+            "festival" => $festival,
+            "scheduleForm" => $scheduleForm->createView(),
+            "commentForm" => $commentForm->createView(),
             "selectedMovies" => $selectedMovies,
             "screeningDays" => $screeningDays
         ));
