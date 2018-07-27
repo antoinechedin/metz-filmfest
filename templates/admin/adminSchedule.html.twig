@@ -37,7 +37,7 @@
                     {% for screeningDay in screeningDays %}
                         <div class="card border-primary mb-4">
                             <h5 class="card-header text-primary">
-                                {{ screeningDay.date|date("l d F Y") }}
+                                {{ screeningDay.date|localizeddate("none", "none", null, null, "EEEE dd MMMM y") }}
                             </h5>
                             <ul id="sortable_{{ screeningDay.id }}"
                                 class="list-group list-group-flush sortable bg-light"
