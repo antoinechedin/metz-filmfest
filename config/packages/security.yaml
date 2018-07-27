@@ -32,4 +32,5 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
          - { path: ^/admin, roles: ROLE_ADMIN }
+         - { path: /inscription, roles: ROLE_ADMIN } # TODO Find another way
         # - { path: ^/profile, roles: ROLE_USER }
