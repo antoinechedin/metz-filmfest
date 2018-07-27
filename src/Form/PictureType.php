@@ -29,7 +29,7 @@ class PictureType extends AbstractType
                 )
             ))
             ->add("save", SubmitType::class)
-            ->add("remove", SubmitType::class);
+            ->add("removePicture", SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)
