@@ -86,13 +86,13 @@
                                     {% endif %}
                                     {{ comment.message }}
                                 </p>
-                                {% if comment.user != null and comment.user.id == user.id %}
+                                {#{% if comment.user != null and comment.user.id == user.id %}
                                     <a href="#"
                                        class="p-1 ml-2 align-self-center">
                                                     <span class="oi oi-trash text-muted" title="supprimer"
                                                           aria-hidden="true"></span>
-                                    </a>{#TODO add deletion form#}
-                                {% endif %}
+                                    </a>#}{#TODO add deletion form#}{#
+                                {% endif %}#}
                             </li>
                         {% endfor %}
                     </ul>
