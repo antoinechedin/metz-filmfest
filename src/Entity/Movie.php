@@ -98,6 +98,7 @@ class Movie
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ScreeningDay", inversedBy="screenedMovies")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $screeningDay;
 
