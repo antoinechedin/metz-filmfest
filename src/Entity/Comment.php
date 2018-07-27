@@ -6,35 +6,29 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\CommentRepository")
+ * @ORM\MappedSuperclass()
  */
-class Comment
+abstract class Comment
 {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="text")
      * @Assert\NotBlank()
      * @Assert\Type("string")
      */
-    private $message;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Movie", inversedBy="comments")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $movie;
+    protected $message;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="comments")
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
-    private $user;
+    protected $user;
 
     public function getId()
     {
@@ -49,18 +43,6 @@ class Comment
     public function setMessage(string $message): self
     {
         $this->message = $message;
-
-        return $this;
-    }
-
-    public function getMovie(): ?Movie
-    {
-        return $this->movie;
-    }
-
-    public function setMovie(?Movie $movie): self
-    {
-        $this->movie = $movie;
 
         return $this;
     }
