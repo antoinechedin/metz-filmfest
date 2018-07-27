@@ -370,11 +370,14 @@ class AdminController extends Controller
 
     public function festivalManagement(Request $request)
     {
-        $festival = new Festival();
+        $entityManager = $this->getDoctrine()->getManager();
+        $festival = $entityManager->getRepository(Festival::class)->find(1); //TODO
+
         $festivalForm = $this->createForm(FestivalType::class, $festival);
         $festivalForm->handleRequest($request);
 
         return $this->render("admin/festivalManagement.html.twig", array(
+            "festival" => $festival,
             "festivalForm" => $festivalForm->createView()
         ));
     }

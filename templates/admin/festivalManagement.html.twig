@@ -2,11 +2,48 @@
 
 {% block main %}
     <div class="row mt-4">
-        <div class="container-fluid mb-4">
+        <div class="col-12 mb-4 text-center">
+            <a href="#" class="btn btn-success btn-lg" tabindex="-1" role="button">
+               Créer un festival
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col mb-4">
             <div class="card shadow-sm border-0">
+                <h2 class="card-header text-center text-title text-white bg-primary">Festival {{ festival.name }}</h2>
                 <div class="card-body">
-                    {{ form_start(festivalForm) }}
-                    {{ form_end(festivalForm) }}
+                    <h3 class="card-title text">Agenda</h3>
+                    <ul class="m-0">
+                        <li>
+                            <strong>Ouverture des inscriptions :</strong>
+                            {{ festival.registrationStartDate|localizeddate("none", "none", null, null, "dd/MM/y") }}
+                        </li>
+                        <li>
+                            <strong>Fermeture des inscriptions :</strong>
+                            {{ festival.registrationEndDate|localizeddate("none", "none", null, null, "dd/MM/y") }}
+                        </li>
+                        <li>
+                            <strong>Festival :</strong>
+                        </li>
+                        <ul>
+                            {% for screeningDay in festival.screeningDays %}
+                                <li>{{ screeningDay.date|localizeddate("none", "none", null, null, "dd/MM/y") }}</li>
+                            {% endfor %}
+                        </ul>
+                    </ul>
+                    <p class="card-text text-right">
+                        <a class="btn btn-secondary" href="#">
+                            <span class="oi oi-pencil" title="Modifier" aria-hidden="true"></span>
+                        </a>
+                    </p>
+                    {#{{ form_start(festivalForm) }}
+                    {{ form_end(festivalForm) }}#}
+                </div>
+                <hr class="m-0"/>
+                <div class="card-body">
+                    <h3 class="card-title">Récompenses</h3>
+                    <p class="card-text text-muted"><em>Pas de récompenses décernées</em></p>
                 </div>
             </div>
         </div>

@@ -38,6 +38,11 @@ class Festival
      */
     private $registrationEndDate;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $name;
+
     public function __construct()
     {
         $this->moviesRegistered = new ArrayCollection();
@@ -131,6 +136,18 @@ class Festival
     public function setRegistrationEndDate(\DateTimeInterface $registrationEndDate): self
     {
         $this->registrationEndDate = $registrationEndDate;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
 
         return $this;
     }
