@@ -22,12 +22,18 @@
                     </button>
                 </div>
                 <div class="card-body">
-                    <div class="collapse" id="collapsePictureForm">
+                    <div class="collapse {% if not pictureForm.vars.valid %} show {% endif %}" id="collapsePictureForm">
                         {{ form_start(pictureForm) }}
-                        <div class="form-row">
-                            <div class="col"> {{ form_row(pictureForm.picture) }}</div>
+                        <div class="form-row mx-1{% if not pictureForm.vars.valid %} pb-3 {% endif %}">
+                            <div class="col">
+                                {{ form_widget(pictureForm.picture) }}
+                                {{ form_label(pictureForm.picture) }}</div>
                             <div class="col-auto">{{ form_row(pictureForm.save, {"icon": "oi-check"}) }}</div>
-                            <div class="col-auto">{{ form_row(pictureForm.removePicture, {"icon": "oi-trash"}) }}</div>
+                            {% if movie.picture != null %}
+                                <div class="col-auto">{{ form_row(pictureForm.removePicture, {"icon": "oi-trash"}) }}</div>
+                            {% else %}
+                                <div class="col-auto">{{ form_row(pictureForm.removePicture, {"icon": "oi-trash", "attr": {"disabled": "disabled"}}) }}</div>
+                            {% endif %}
                         </div>
                         {{ form_end(pictureForm) }}
                     </div>
