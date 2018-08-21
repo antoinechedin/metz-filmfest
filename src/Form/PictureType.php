@@ -28,11 +28,13 @@ class PictureType extends AbstractType
                 )
             ))
             ->add("save", SubmitType::class, array(
+                "label" => " ",
                 "attr" => array(
                     "class" => "btn btn-success"
                 )
             ))
             ->add("removePicture", SubmitType::class, array(
+                "label" => " ",
                 "attr" => array(
                     "class" => "btn btn-danger"
                 )
