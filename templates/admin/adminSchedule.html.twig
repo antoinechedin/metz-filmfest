@@ -61,7 +61,11 @@
                     {{ form_start(scheduleForm) }}
                     {% for widget in scheduleForm %}
                         {% if widget.vars.name != "_token" %}
-                            {{ form_widget(widget) }}
+                            {% if widget.vars.name == "save" %}
+                                {{ form_widget(widget, {"icon": "oi-check"}) }}
+                            {% else %}
+                                {{ form_widget(widget) }}
+                            {% endif %}
                         {% else %}
                             {{ render_esi(controller("App\\Controller\\AdminController::renderCSRFToken", { "tokenValue": widget.vars.value })) }}
                         {% endif %}
