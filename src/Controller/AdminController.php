@@ -32,7 +32,6 @@ use Symfony\Component\HttpKernel\EventListener\AbstractSessionListener;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use Symfony\Component\Validator\Constraints\Image;
 
 class AdminController extends Controller
 {
@@ -111,23 +110,21 @@ class AdminController extends Controller
             }
 
             $fileName = null;
-
             // Then, check if there's a new one to store
             if ($pictureForm->get("save")->isClicked()) {
                 /** @var UploadedFile $picture */
                 $picture = $pictureForm["picture"]->getData();
 
-                // Ensure that the file uploaded is a picture
-                if (strpos(MimeTypeGuesser::getInstance()->guess($picture), "image/") !== false) {
-                    $fileName = $this->generateUniqueFileName() . "." . $picture->guessExtension();
+                if ($picture != null and $picture->isFile()) {
+                    // Ensure that the file uploaded is a picture
+                    if (strpos(MimeTypeGuesser::getInstance()->guess($picture), "image/") !== false) {
+                        $fileName = $this->generateUniqueFileName() . "." . $picture->guessExtension();
 
-                    $picture->move(
-                        $this->getParameter("movie_picture_directory"),
-                        $fileName
-                    );
-
-                } else {
-                    throw new \Exception(); //TODO show an error popup
+                        $picture->move(
+                            $this->getParameter("movie_picture_directory"),
+                            $fileName
+                        );
+                    } //TODO: Maybe do something if the MimeTypeGuesser don't work
                 }
             }
 
@@ -272,7 +269,6 @@ class AdminController extends Controller
         $entityManager = $this->getDoctrine()->getManager();
         $screeningDayRepository = $entityManager->getRepository(ScreeningDay::class);
         $movieRepository = $entityManager->getRepository(Movie::class);
-
 
 
         // Handle POST
