@@ -400,7 +400,8 @@ class AdminController extends Controller
 
         return $this->render("admin/festivalManagement.html.twig", array(
             "festival" => $festival,
-            "festivalForm" => $festivalForm->createView()
+            "festivalForm" => $festivalForm->createView(),
+            "edit" => $request->query->get("edit", 0)
         ));
     }
 
