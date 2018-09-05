@@ -50,6 +50,9 @@
                             | {{ movie.director.personalInformation.birthDate|date("d/m/Y") }}
                         </li>
                         <li>
+                            <strong>Email :</strong> {{ movie.director.personalInformation.email }} {#TODO: Maybe Remove this in a future patch (you known, private stuff#}
+                        </li>
+                        <li>
                             <strong>Études : </strong> {{ movie.director.personalInformation.studyPlace }}
                             ({{ movie.director.personalInformation.studyYear }})
                         </li>
