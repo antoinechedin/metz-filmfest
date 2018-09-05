@@ -91,11 +91,6 @@ class Movie
     private $shortlisted;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="movie", orphanRemoval=true)
-     */
-    private $comments;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Festival", inversedBy="moviesRegistered")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -110,6 +105,17 @@ class Movie
      * @ORM\Column(type="integer", nullable=true)
      */
     private $screeningDayIndex;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     * @Assert\Type("string")
+     */
+    private $picture;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\MovieComment", mappedBy="movie", orphanRemoval=true)
+     */
+    private $comments;
 
     public function __construct()
     {
@@ -256,37 +262,6 @@ class Movie
         return $this;
     }
 
-    /**
-     * @return Collection|Comment[]
-     */
-    public function getComments(): Collection
-    {
-        return $this->comments;
-    }
-
-    public function addComment(Comment $comment): self
-    {
-        if (!$this->comments->contains($comment)) {
-            $this->comments[] = $comment;
-            $comment->setMovie($this);
-        }
-
-        return $this;
-    }
-
-    public function removeComment(Comment $comment): self
-    {
-        if ($this->comments->contains($comment)) {
-            $this->comments->removeElement($comment);
-            // set the owning side to null (unless already changed)
-            if ($comment->getMovie() === $this) {
-                $comment->setMovie(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getFestival(): ?Festival
     {
         return $this->festival;
@@ -319,6 +294,49 @@ class Movie
     public function setScreeningDayIndex(?int $screeningDayIndex): self
     {
         $this->screeningDayIndex = $screeningDayIndex;
+
+        return $this;
+    }
+
+    public function getPicture(): ?string
+    {
+        return $this->picture;
+    }
+
+    public function setPicture(?string  $picture): self
+    {
+        $this->picture = $picture;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MovieComment[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(MovieComment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setMovie($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(MovieComment $comment): self
+    {
+        if ($this->comments->contains($comment)) {
+            $this->comments->removeElement($comment);
+            // set the owning side to null (unless already changed)
+            if ($comment->getMovie() === $this) {
+                $comment->setMovie(null);
+            }
+        }
 
         return $this;
     }

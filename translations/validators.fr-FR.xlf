@@ -30,6 +30,15 @@
                 <source>Email already taken.</source>
                 <target>Cet email est déjà pris, veuillez en choisir un autre.</target>
             </trans-unit>
+            <trans-unit id="notAValidImage">
+                <source>This file is not a valid image.</source>
+                <target>Ce fichier n'est pas une image</target>
+            </trans-unit>
+            <trans-unit id="maximumPictureSize">
+                <source>The file is too large. Allowed maximum size is {{ limit }} {{ suffix }}.</source>
+                <target>Cette image est trop grosse, {{ limit }} MB maximum.</target>
+            </trans-unit>
+
         </body>
     </file>
 </xliff>

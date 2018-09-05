@@ -1,55 +1,101 @@
 {% extends "admin/adminLayout.html.twig" %}
 
 {% block main %}
-    <div class="pt-3 pb-2 mb-3">
-        <div class=" container-fluid">
-            <h3 class="text-muted">{{ movie.title }} ({{ movie.year }})</h3>
-            <h6 class="text-muted mb-3">{{ movie.duration }} min |
-                {% for category in movie.categories %}
-                    <span class="badge badge-secondary">{{ category.name }}</span>
-                {% endfor %}
-            </h6>
-            <p>{{ movie.synopsis }}</p>
-            <ul>
-                <li>
-                    <strong>Réalisateur :</strong> {{ movie.director.firstname }} {{ movie.director.name }}
-                    | {{ movie.director.personalInformation.birthDate|date("d/m/Y") }}
-                </li>
-                <li>
-                    <strong>Études : </strong> {{ movie.director.personalInformation.studyPlace }}
-                    ({{ movie.director.personalInformation.studyYear }})
-                </li>
-                {% if movie.actor != null %}
-                    <li><strong>Acteur nominé : </strong> {{ movie.actor.firstname }} {{ movie.actor.name }}
-                    </li>
-                {% else %}
-                    <li><strong>Pas d'acteur nominé</strong></li>
-                {% endif %}
-            </ul>
-            <p>
-                <a href="{{ movie.link }}">
-                    <span class="oi oi-link-intact" title="lien" aria-hidden="true"></span> {{ movie.link }}
-                </a>
-            </p>
-            {% if movie.additionalInformation != null %}
-                <p>{{ movie.additionalInformation }}</p>
-            {% else %}
-                <p class="text-muted"><em>Pas d'informations supplémentaires</em></p>
-            {% endif %}
+    <div class="row mt-4">
+        <div class="container-fluid col-lg-6 col-xl-5 mb-4">
+            <div class="card shadow-sm border-0">
+                <div class="image-wrapper">
+                    {% if movie.picture != null %}
+                        <img src="{{ asset(movie_picture_directory ~ movie.picture) }}" class="card-img-top">
+                    {% else %}
+                        <div class="card-img-top no-picture bg-secondary"></div>
+                        <div class="image-text text-center text-white">
+                            <h1 class="display-1 m-0"><span class="oi oi-image" title="Image" aria-hidden="true"></span>
+                            </h1>
+                            Pas d'image
+                        </div>
+                    {% endif %}
+                    <button type="button" class="b-r-image-button btn btn-sm btn-white"
+                            data-toggle="collapse" data-target="#collapsePictureForm" aria-expanded="false"
+                            aria-controls="collapsePictureForm">
+                        <span class="oi oi-pencil" title="Modifier" aria-hidden="true"></span>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="collapse {% if not pictureForm.vars.valid %} show {% endif %}" id="collapsePictureForm">
+                        {{ form_start(pictureForm) }}
+                        <div class="form-row mx-1{% if not pictureForm.vars.valid %} pb-3 {% endif %}">
+                            <div class="col">
+                                {{ form_widget(pictureForm.picture) }}
+                                {{ form_label(pictureForm.picture) }}</div>
+                            <div class="col-auto">{{ form_row(pictureForm.save, {"icon": "oi-check"}) }}</div>
+                            {% if movie.picture != null %}
+                                <div class="col-auto">{{ form_row(pictureForm.removePicture, {"icon": "oi-trash"}) }}</div>
+                            {% else %}
+                                <div class="col-auto">{{ form_row(pictureForm.removePicture, {"icon": "oi-trash", "attr": {"disabled": "disabled"}}) }}</div>
+                            {% endif %}
+                        </div>
+                        {{ form_end(pictureForm) }}
+                    </div>
+                    <h3 class="text-muted card-title">{{ movie.title }} ({{ movie.year }})</h3>
+                    <h6 class="text-muted mb-3">{{ movie.duration }} min |
+                        {% for category in movie.categories %}
+                            <span class="badge badge-secondary">{{ category.name }}</span>
+                        {% endfor %}
+                    </h6>
+                    <p>{{ movie.synopsis }}</p>
+                    <ul>
+                        <li>
+                            <strong>Réalisateur :</strong> {{ movie.director.firstname }} {{ movie.director.name }}
+                            | {{ movie.director.personalInformation.birthDate|date("d/m/Y") }}
+                        </li>
+                        <li>
+                            <strong>Email :</strong> {{ movie.director.personalInformation.email }} {#TODO: Maybe Remove this in a future patch (you known, private stuff#}
+                        </li>
+                        <li>
+                            <strong>Études : </strong> {{ movie.director.personalInformation.studyPlace }}
+                            ({{ movie.director.personalInformation.studyYear }})
+                        </li>
+                        {% if movie.actor != null %}
+                            <li><strong>Acteur nominé : </strong> {{ movie.actor.firstname }} {{ movie.actor.name }}
+                            </li>
+                        {% else %}
+                            <li><strong>Pas d'acteur nominé</strong></li>
+                        {% endif %}
+                    </ul>
+                    <p>
+                        <a href="{{ movie.link }}">
+                            <span class="oi oi-link-intact" title="lien" aria-hidden="true"></span> {{ movie.link }}
+                        </a>
+                    </p>
+                    {% if movie.additionalInformation != null %}
+                        <p>{{ movie.additionalInformation }}</p>
+                    {% else %}
+                        <p class="text-muted"><em>Pas d'informations supplémentaires</em></p>
+                    {% endif %}
 
-            <p class="text-center mb-4">
-                <a href="{{ path("shortlistMovie", {"movieId": movie.id, "value": "true"}) }}" class="mx-2 btn {% if movie.shortlisted %}btn-outline-secondary disabled{% else %}btn-success{% endif %}" role="button">
-                    <span class="oi oi-check" title="accepter" aria-hidden="true"></span> Sélectionner le film
-                </a>
-                <a href="{{ path("shortlistMovie", {"movieId": movie.id, "value": "false"}) }}" class="mx-2 btn {% if movie.shortlisted is same as(false) %}btn-outline-secondary disabled{% else %}btn-danger{% endif %}" role="button">
-                    <span class="oi oi-x" title="refuser" aria-hidden="true"></span> Éliminer le film
-                </a>
-                <a href="{{ path("shortlistMovie", {"movieId": movie.id, "value": "null"}) }}" class="mx-2 btn {% if movie.shortlisted is null %}btn-outline-secondary disabled{% else %}btn-warning{% endif %}" role="button">
-                    <span class="oi oi-reload" title="reset" aria-hidden="true"></span> Réinitialiser
-                </a>
-            </p>
-
-            <div class="card my-3 shadow-sm">
+                    <p class="text-center mb-4">
+                        <a href="{{ path("shortlistMovie", {"movieId": movie.id, "value": "true"}) }}"
+                           class="mx-2 btn btn-sm {% if movie.shortlisted %}btn-outline-secondary disabled{% else %}btn-success{% endif %}"
+                           role="button">
+                            <span class="oi oi-check" title="accepter" aria-hidden="true"></span> Sélectionner le film
+                        </a>
+                        <a href="{{ path("shortlistMovie", {"movieId": movie.id, "value": "false"}) }}"
+                           class="mx-2 btn btn-sm {% if movie.shortlisted is same as(false) %}btn-outline-secondary disabled{% else %}btn-danger{% endif %}"
+                           role="button">
+                            <span class="oi oi-x" title="refuser" aria-hidden="true"></span> Éliminer le film
+                        </a>
+                        <a href="{{ path("shortlistMovie", {"movieId": movie.id, "value": "null"}) }}"
+                           class="mx-2 btn btn-sm {% if movie.shortlisted is null %}btn-outline-secondary disabled{% else %}btn-warning{% endif %}"
+                           role="button">
+                            <span class="oi oi-reload" title="reset" aria-hidden="true"></span> Réinitialiser
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid col-lg-6 col-xl-7 mb-4">
+            <div class="card shadow-sm border-0">
                 <div class="card-body">
                     <h6 class="card-text border-bottom">Discussion</h6>
                     <ul class="list-unstyled mb-0">
@@ -63,13 +109,13 @@
                                     {% endif %}
                                     {{ comment.message }}
                                 </p>
-                                {% if comment.user != null and comment.user.id == user.id %}
+                                {#{% if comment.user != null and comment.user.id == user.id %}
                                     <a href="{{ path("deleteComment", {"movieId": movie.id, "commentId": comment.id}) }}"
                                        class="p-1 ml-2 align-self-center">
                                                     <span class="oi oi-trash text-muted" title="supprimer"
                                                           aria-hidden="true"></span>
                                     </a>
-                                {% endif %}
+                                {% endif %}TODO: Add a comment deletion form instead#}
                             </li>
                         {% endfor %}
                     </ul>

@@ -7,10 +7,14 @@
         <div class="container-fluid homepage-poster py-5 px-0">
             <div class="homepage-poster-spacer"></div>
             <div class="container text-center my-5 px-0">
-                <a href="{{ path("inscription") }}" class="btn btn-green btn-xl my-2 text-title">Participer
+                {#<a href="{{ path("inscription") }}" class="btn btn-green btn-xl my-2 text-title">Participer
                     au
                     Festival</a>
-                <p>Les inscriptions sont ouvertes<br/>jusqu'au <strong>5 juillet 2018</strong> compris</p>
+                <p>Les inscriptions sont ouvertes<br/>jusqu'au <strong>5 juillet 2018</strong> compris</p> TODO Find another way#}
+                <p class="lead">Les inscriptions sont désormais fermées.<br/>
+                    Le festival se déroulera à Metz<br/>
+                    le 24 et 25 septembre</p>
+                <p>Pus d'informations juste en dessous</p>
                 <a target="_blank" href="{{ path("registrationRules") }}" class="btn btn-yellow  my-2">
                     <span class="oi oi-data-transfer-download" title="Download" aria-hidden="true"></span>
                     Télécharger le règlement
@@ -23,23 +27,33 @@
                 <h1 class="display-4 text-title">Festival du Film Étudiant de Metz</h1>
                 <p class="lead">3<sup>ème</sup> Édition</p>
                 <hr class="my-2"/>
-                <p>Le Festival du Film Étudiant de Metz a pour principaux objectifs de faire découvrir de jeunes talents
+                <p class="lead">Bonjour à Tous !</p>
+                <p>La 3<sup>ème</sup> édition du Festival du Film Etudiant de Metz ouvre officiellement ses portes !</p>
+                <p>Le <strong>lundi 24 septembre</strong> au théâtre <strong>Bernard-Marie Koltès</strong> à partir de
+                    <strong>18h30</strong> et le <strong>mardi 25 septembre</strong> au cinéma <strong>le Klub</strong>
+                    dès <strong>19h</strong>.Venez découvrir les courts-métrages des jeunes talents de Metz et voter
+                    pour décerner les prix du public du meilleur film et de la meilleure interprétation.<br/>
+                    L’entrée est <strong>gratuite</strong> pour tous (dans la limite des places disponibles) et un
+                    apéritif sera servi lors de la remise des prix.
+                    </p>
+                <p>Nous sommes donc fiers de vous convier à cette dernière édition du festival,
+                    que
+                    vous soyez
+                    participants ou spectateurs, soyez les bienvenus !</p>
+                <a href="{{ path("schedule") }}" class="btn btn-green btn-lg my-2">Voir la programmation</a>
+                <p class="mt-3">Le Festival du Film Étudiant de Metz a pour principaux objectifs de faire découvrir de jeunes talents
                     messins et de leur proposer un espace de diffusion artistique de qualité ; le tout dans une ambiance
                     conviviale. Ellipse souhaite, à travers cette 3<sup>ème</sup> édition, continuer à donner un
                     essor
                     et une
                     visibilité importante aux courts-métrages créatifs des étudiants.</p>
-                <p>Nous sommes donc fiers de vous convier à notre 3<sup>ème</sup> édition du Festival du Film Etudiant,
-                    que
-                    vous soyez
-                    participants ou spectateurs, soyez les bienvenus !</p>
-                <a href="{{ path("schedule") }}" class="btn btn-green btn-lg my-2">Voir la programmation</a>
+
             </div>
         </div>
 
         <div class="container-fluid pt-5 bg-dark text-center text-light">
             <h1 class="display-4 text-title">Les Récompenses</h1>
-            <p class="lead">Informations supplémentaires bientôt disponibles</p>
+            {#<p class="lead">Informations supplémentaires bientôt disponibles</p>#}
             <div class="row mt-5">
                 <div class="col-sm-6 col-lg-3 pb-5">
                     <img class="img-fluid pb-3" src="{{ asset("svg/red-gold-medal.svg") }}" style="width: 50%">

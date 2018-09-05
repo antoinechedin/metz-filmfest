@@ -26,7 +26,11 @@ class CommentType extends AbstractType
                     "placeholder" => "Message"
                 )
             ))
-            ->add("submit", SubmitType::class);
+            ->add("submit", SubmitType::class, array(
+                "attr" => array(
+                    "class" => "btn btn-primary"
+                )
+            ));
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -1,6 +1,7 @@
 $theme-colors: (
         "green": #4b8271,
-        "yellow": #f1cb38
+        "yellow": #f1cb38,
+        "white" : #ffffff
 );
 
 @import "~bootstrap/scss/bootstrap";
@@ -60,7 +61,7 @@ main {
 }
 
 .schedule-poster > h1 {
-  text-shadow: black 0px 5px 15px;
+  text-shadow: black 0 5px 15px;
 }
 
 .homepage-poster-spacer {
@@ -80,4 +81,22 @@ body {
 
 .text-title {
   font-family: "Lobster", cursive;
+}
+
+.image-wrapper {
+  position:relative;
+  display:inline-block;
+  text-align:center;
+}
+
+.image-text {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+}
+
+.no-picture {
+  width: 100%;
+  padding-bottom: 56.25%;
 }

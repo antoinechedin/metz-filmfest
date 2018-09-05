@@ -126,6 +126,22 @@
                 <source>Update data</source>
                 <target>Valider les modifications</target>
             </trans-unit>
+            <trans-unit id="chooseAPicture">
+                <source>Choose a Picture</source>
+                <target>Choisir une image</target>
+            </trans-unit>
+            <trans-unit id="save">
+                <source>Save</source>
+                <target>Sauvegarder</target>
+            </trans-unit>
+            <trans-unit id="removePicture">
+                <source>Remove picture</source>
+                <target>Supprimer l'image</target>
+            </trans-unit>
+            <trans-unit id="simpleSpace">
+                <source> </source>
+                <target> </target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

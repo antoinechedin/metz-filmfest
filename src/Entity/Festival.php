@@ -28,10 +28,16 @@ class Festival
      */
     private $screeningDays;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\FestivalComment", mappedBy="festival", orphanRemoval=true)
+     */
+    private $comments;
+
     public function __construct()
     {
         $this->moviesRegistered = new ArrayCollection();
         $this->screeningDays = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getId()
@@ -95,6 +101,37 @@ class Festival
             // set the owning side to null (unless already changed)
             if ($screeningDay->getFestival() === $this) {
                 $screeningDay->setFestival(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|FestivalComment[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(FestivalComment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setFestival($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(FestivalComment $comment): self
+    {
+        if ($this->comments->contains($comment)) {
+            $this->comments->removeElement($comment);
+            // set the owning side to null (unless already changed)
+            if ($comment->getFestival() === $this) {
+                $comment->setFestival(null);
             }
         }
 
