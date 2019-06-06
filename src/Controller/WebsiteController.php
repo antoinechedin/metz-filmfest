@@ -8,8 +8,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Festival;
 use App\Entity\Movie;
 use App\Entity\ScreeningDay;
+use App\Repository\FestivalRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
@@ -24,9 +26,12 @@ class WebsiteController extends Controller
     public function schedule()
     {
         $entityManager = $this->getDoctrine()->getManager();
+        $festivalRepository = $entityManager->getRepository(Festival::class);
         $screeningDayRepository = $entityManager->getRepository(ScreeningDay::class);
         $movieRepository = $entityManager->getRepository(Movie::class);
-        $screeningDays = $screeningDayRepository->findBy(array(), array("date" => "ASC")); // Retrieve screening days in the right order
+
+        $festival = $festivalRepository->find(2);
+        $screeningDays = $screeningDayRepository->findBy(array("festival" => $festival), array("date" => "ASC")); // Retrieve screening days in the right order
         // Then sort movies
         /* @var $screeningDay ScreeningDay*/
         foreach ($screeningDays as $screeningDay) {

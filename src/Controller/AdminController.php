@@ -37,8 +37,9 @@ class AdminController extends Controller
 {
     public function index()
     {
-        $repository = $this->getDoctrine()->getRepository(Movie::class);
-        $movies = $repository->findAll();
+        $entityManager = $this->getDoctrine()->getManager();
+        $festival = $entityManager->getRepository(Festival::class)->find(2); //FIXME: Change to automatic festival
+        $movies = $entityManager->getRepository(Movie::class)->findBy(array("festival" => $festival));
 
         $waitingMovies = array();
         $selectedMovies = array();
@@ -89,6 +90,7 @@ class AdminController extends Controller
         ));
     }
 
+    // FIXME: Movie are access by url like .../movie/{movieId}. Change it to a get request instead like .../movie?id=12
     public function movieDetails(Request $request, $movieId, LoggerInterface $logger)
     {
         $repository = $this->getDoctrine()->getRepository(Movie::class);
@@ -236,8 +238,7 @@ class AdminController extends Controller
         return $this->redirectToRoute("homepage");
     }
 
-    public
-    function shortlistMovie($movieId, $value)
+    public function shortlistMovie($movieId, $value)
     {
         $entityManager = $this->getDoctrine()->getManager();
         $movie = $entityManager->getRepository(Movie::class)->find($movieId);
@@ -269,13 +270,14 @@ class AdminController extends Controller
         $entityManager = $this->getDoctrine()->getManager();
         $screeningDayRepository = $entityManager->getRepository(ScreeningDay::class);
         $movieRepository = $entityManager->getRepository(Movie::class);
-
+        /** @var Festival $festival */
+        $festival = $entityManager->getRepository(Festival::class)->find(2); //FIXME: Change to automatic festival
 
         // Handle POST
 
         // Schedule form
         $postData = array();
-        $screeningDays = $screeningDayRepository->findBy(array(), array("date" => "ASC")); // Retrieve screening days in the right order
+        $screeningDays = $screeningDayRepository->findBy(array("festival" => $festival), array("date" => "ASC")); // Retrieve screening days in the right order
         $formBuilder = $this->createFormBuilder($postData)
             ->add("day_0", HiddenType::class, array(
                 "attr" => array("id" => "day_0")
@@ -294,8 +296,6 @@ class AdminController extends Controller
         $scheduleForm = $formBuilder->getForm();
 
         // Comment Form
-        /** @var Festival $festival */
-        $festival = $entityManager->getRepository(Festival::class)->find(1); // TODO Change that
         $comment = new FestivalComment();
         $commentForm = $this->createForm(CommentType::class, $comment);
 
@@ -361,7 +361,7 @@ class AdminController extends Controller
         foreach ($screeningDays as $screeningDay) {
             $entityManager->detach($screeningDay);
             $screeningDay->clearScreenedMovies();
-            $sortedMovies = $movieRepository->findBy(array("screeningDay" => $screeningDay->getId()), array("screeningDayIndex" => "ASC"));
+            $sortedMovies = $movieRepository->findBy(array("festival" => $festival, "screeningDay" => $screeningDay->getId()), array("screeningDayIndex" => "ASC"));
             // If there's no screenedMovie this day, add 0
             if ($sortedMovies == null) {
                 $eTag .= "0";
@@ -387,6 +387,7 @@ class AdminController extends Controller
         // Else finish rendering
 
         $selectedMovies = $movieRepository->findBy(array(
+            "festival" => $festival,
             "shortlisted" => true,
             "screeningDay" => null
         ));

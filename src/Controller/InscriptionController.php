@@ -21,8 +21,8 @@ class InscriptionController extends Controller
         $entityManager = $this->getDoctrine()->getManager();
 
         $movie = new Movie();
-        // TODO: handle the current festival instead of 1
-        $movie->setFestival($entityManager->getRepository(Festival::class)->find(1));
+        // FIXME: handle the current festival instead of 2
+        $movie->setFestival($entityManager->getRepository(Festival::class)->find(2));
 
         $form = $this->createForm(MovieType::class, $movie);
         $form->handleRequest($request);
