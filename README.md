@@ -1,6 +1,6 @@
 # Festival du film étudiant de Metz
 
-![FFEM banner](banner.png "FFEM banner")
+![FFEM banner](banner.jpg "FFEM banner")
 
 
 How to run on localhost
