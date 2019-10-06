@@ -1,8 +1,9 @@
-Festival du film étudiant de Metz
-========================
+# Festival du film étudiant de Metz
 
-TODO
+![FFEM banner](banner.png "FFEM banner")
+
 
 How to run on localhost
 ---------------------
-The `web/` folder is rename to `www/`. To run the localhost server use the following command: `php bin\console server:run --docroot=www`
+To run the localhost server use the following command: 
+`php bin\console server:run --docroot=www`
